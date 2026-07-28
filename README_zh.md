@@ -30,13 +30,13 @@
 
 ## 1. 模型介绍
 
-Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，也是我们迄今为止能力最强的模型。它是一个基于 Kimi Delta Attention（KDA）和 Attention Residuals（AttnRes）构建的 2.8T 参数模型，具备原生视觉能力和 100 万 token 的上下文窗口。它是全球首个开放的 3T 级别模型，旨在为长程编码、知识工作和推理等领域提供前沿智能。
+Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，也是我们迄今为止能力最强的模型。它是一个基于 Kimi 增量注意力（Kimi Delta Attention，KDA）和注意力残差（Attention Residuals，AttnRes）构建的 2.8T 参数模型，具备原生视觉能力和 100 万词元（token）的上下文窗口。它是全球首个开放的 3T 级别模型，旨在为长程编码、知识工作和推理等领域提供前沿智能。
 
 ### 核心特性
-- **全新架构**：Kimi K3 基于 Kimi Delta Attention（KDA）和 Attention Residuals（AttnRes）构建，并通过 Stable LatentMoE 框架提升 MoE 稀疏度，在 896 个专家中激活 16 个——相较 Kimi K2，整体扩展效率提升约 2.5 倍。
-- **长程编码**：在极少人工干预的情况下，Kimi K3 能够持续进行长时间的工程会话、驾驭超大规模代码仓库并编排终端工具——涵盖 GPU 内核优化、编译器开发，乃至视觉参与的游戏开发、CAD 甚至芯片设计。
+- **全新架构**：Kimi K3 基于 Kimi 增量注意力（KDA）和注意力残差（AttnRes）构建，并通过稳定潜在混合专家（Stable LatentMoE）框架提升混合专家模型（MoE）的稀疏度，在 896 个专家中激活 16 个——相较 Kimi K2，整体扩展效率提升约 2.5 倍。
+- **长程编码**：在极少人工干预的情况下，Kimi K3 能够持续进行长时间的工程会话、驾驭超大规模代码仓库并编排终端工具——涵盖图形处理器（GPU）内核优化、编译器开发，乃至视觉参与的游戏开发、计算机辅助设计（CAD）甚至芯片设计。
 - **智能体知识工作**：Kimi K3 推动端到端知识工作的发展，依托其原生多模态架构，能够产出带有交互式可视化、组件和仪表盘的深度研究成果，以及动效设计与视频剪辑。
-- **原生多模态与长上下文**：Kimi K3 在同一个模型内理解文本、图像和视频，并支持 100 万 token 的上下文窗口。
+- **原生多模态与长上下文**：Kimi K3 在同一个模型内理解文本、图像和视频，并支持 100 万词元的上下文窗口。
 - **开放前沿权重**：我们依据 Kimi K3 许可证发布 Kimi K3 的完整模型权重，让前沿智能开放地服务于研究、部署和进一步创新。
 ## 2. 模型概要
 
@@ -65,7 +65,7 @@ Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，�
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center"><strong>注意力层构成</strong></td>
-<td align="center" style="vertical-align: middle; text-align: center">69 KDA + 24 Gated MLA</td>
+<td align="center" style="vertical-align: middle; text-align: center">69 层增量注意力（KDA）+ 24 层门控多头潜在注意力（Gated MLA）</td>
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center"><strong>注意力隐藏维度</strong></td>
@@ -76,11 +76,11 @@ Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，�
 <td align="center" style="vertical-align: middle; text-align: center">96</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Latent MoE 维度</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>潜在混合专家（Latent MoE）维度</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">3584</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>MoE 隐藏维度</strong>（每个专家）</td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>混合专家（MoE）隐藏维度</strong>（每个专家）</td>
 <td align="center" style="vertical-align: middle; text-align: center">3072</td>
 </tr>
 <tr>
@@ -88,7 +88,7 @@ Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，�
 <td align="center" style="vertical-align: middle; text-align: center">896</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>每个 Token 选择的专家数</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>每个词元选择的专家数</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">16</td>
 </tr>
 <tr>
@@ -105,7 +105,7 @@ Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，�
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center"><strong>注意力机制</strong></td>
-<td align="center" style="vertical-align: middle; text-align: center">KDA &amp; Gated MLA</td>
+<td align="center" style="vertical-align: middle; text-align: center">增量注意力（KDA）&amp; 门控多头潜在注意力（Gated MLA）</td>
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center"><strong>激活函数</strong></td>
@@ -121,7 +121,7 @@ Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，�
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center"><strong>量化</strong></td>
-<td align="center" style="vertical-align: middle; text-align: center">MXFP4 权重 / MXFP8 激活<br>（量化感知训练）</td>
+<td align="center" style="vertical-align: middle; text-align: center">四位微缩浮点（MXFP4）权重 / 八位微缩浮点（MXFP8）激活<br>（量化感知训练）</td>
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center"><strong>模态</strong></td>
@@ -572,7 +572,7 @@ Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，�
 <details>
 <summary><b>脚注</b></summary>
 
-Kimi K3 的所有结果均在推理强度（reasoning effort）设为 'max'、temperature = 1.0 的条件下获得。对于单步任务（如 GPQA Diamond、HLE-Full 以及不使用工具的视觉基准测试），我们设置 top-p = 0.95；对于智能体任务，我们设置 top-p = 1.0。对于 HLE-Full、MMMU-Pro、CharXiv (RQ)、MathVision 和 ZeroBench，每个单元格依次报告不使用和使用工具增强（HLE-Full 使用通用工具，视觉基准测试使用 Python）的分数。
+Kimi K3 的所有结果均在推理强度（reasoning effort）设为 'max'、温度（temperature）= 1.0 的条件下获得。对于单步任务（如 GPQA Diamond、HLE-Full 以及不使用工具的视觉基准测试），我们设置核采样（top-p）= 0.95；对于智能体任务，我们设置核采样（top-p）= 1.0。对于 HLE-Full、MMMU-Pro、CharXiv (RQ)、MathVision 和 ZeroBench，每个单元格依次报告不使用和使用工具增强（HLE-Full 使用通用工具，视觉基准测试使用 Python）的分数。
 
 1. **推理与知识基准测试**
    - **CritPt 和 AA-LCR。** 分数引自 [Artificial Analysis](https://artificialanalysis.ai/)，截至 2026 年 7 月 23 日。
@@ -591,7 +591,7 @@ Kimi K3 的所有结果均在推理强度（reasoning effort）设为 'max'、te
    - **OfficeQA Pro 和 SpreadsheetBench 2。** Kimi K3、GLM-5.2、Claude Opus 4.8 和 Claude Fable 5 使用 Claude Code 框架进行评测；GPT-5.5 和 GPT-5.6 Sol 使用 Codex 框架进行评测。
    - **MCP-Atlas。** 所有模型均在 500 个任务的公开子集上评测，回合上限为 100，使用 Gemini 3.1 Pro 作为评判模型。
    - **AutomationBench。** 所有模型均在 600 个任务的公开子集上评测，其余方面均遵循官方 GitHub 设置。
-   - **BrowseComp。** 我们采用在 300K token 时触发的上下文压缩策略。在使用完整 100 万 token 上下文窗口且不进行上下文管理的情况下评测时，Kimi K3 取得 90.4 分。Claude Fable 5、Claude Opus 4.8、GPT-5.6 Sol 和 GPT-5.5 的结果引自 [Anthropic](https://www.anthropic.com/news/claude-fable-5-mythos-5) 和 [OpenAI](https://openai.com/index/gpt-5-6/)。
+   - **BrowseComp。** 我们采用在 30 万词元时触发的上下文压缩策略。在使用完整 100 万词元上下文窗口且不进行上下文管理的情况下评测时，Kimi K3 取得 90.4 分。Claude Fable 5、Claude Opus 4.8、GPT-5.6 Sol 和 GPT-5.5 的结果引自 [Anthropic](https://www.anthropic.com/news/claude-fable-5-mythos-5) 和 [OpenAI](https://openai.com/index/gpt-5-6/)。
    - **GDPval-AA v2、AA-Briefcase、τ³-Banking、Harvey Lab-AA 和 APEX-Agents。** 分数引自 [Artificial Analysis](https://artificialanalysis.ai/) 和 [APEX-Agents 排行榜](https://www.mercor.com/apex/apex-agents-leaderboard/)，截至 2026 年 7 月 23 日。对于 Harvey Lab-AA，我们报告标准通过率（criterion pass rate）。
    - **CorpFin v2、Finance Agent v2 和 Legal Research Bench。** 分数引自 [Vals AI](https://www.vals.ai/)。
    - **Agents' Last Exam。** 分数引自[官方排行榜](https://agents-last-exam.org/leaderboard)，截至 2026 年 7 月 23 日；我们报告排行榜的主要通过率指标。在排行榜上，每个模型与特定框架配对：Kimi K3 使用 Kimi Code；GPT-5.6 Sol 和 GPT-5.5 使用 Codex；Claude Fable 5、Claude Opus 4.8 和 GLM-5.2 使用 Claude Code。<sup>†</sup> Claude Fable 5 条目以 xhigh 强度运行，其中 40% 的任务被标注为降级。
@@ -601,14 +601,14 @@ Kimi K3 的所有结果均在推理强度（reasoning effort）设为 'max'、te
 
 </details>
 
-## 4. 原生 MXFP4 量化
+## 4. 原生四位微缩浮点（MXFP4）量化
 
-Kimi K3 从 SFT 阶段起就采用量化感知训练，使用 MXFP4 权重与 MXFP8 激活，以实现广泛的硬件兼容性。
+Kimi K3 从监督微调（SFT）阶段起就采用量化感知训练，使用四位微缩浮点（MXFP4）权重与八位微缩浮点（MXFP8）激活，以实现广泛的硬件兼容性。
 
 ## 5. 部署
 
 > [!Note]
-> 您可以在 https://platform.kimi.ai 上选择 `kimi-k3` 来访问 Kimi K3 的 API，我们为您提供 OpenAI/Anthropic 兼容的 API。目前，推荐使用以下推理引擎运行 Kimi K3：
+> 您可以在 https://platform.kimi.ai 上选择 `kimi-k3` 来访问 Kimi K3 的应用程序接口（API），我们为您提供 OpenAI/Anthropic 兼容的接口。目前，推荐使用以下推理引擎运行 Kimi K3：
 
 - [vLLM](https://github.com/vllm-project/vllm) — 参见 [recipes](https://recipes.vllm.ai/moonshotai/Kimi-K3)
 - [SGLang](https://github.com/sgl-project/sglang) — 参见 [cookbook](https://docs.sglang.io/cookbook/autoregressive/Moonshotai/Kimi-K3)
@@ -619,7 +619,7 @@ Kimi K3 从 SFT 阶段起就采用量化感知训练，使用 MXFP4 权重与 MX
 
 Kimi K3 始终开启思考（thinking）模式，并会返回 `reasoning_content`。思考强度通过请求中的顶层字段 `reasoning_effort` 配置，支持 `"low"`、`"high"` 和 `"max"`（默认为 `"max"`）。
 
-Kimi K3 以保留思考历史（preserved thinking history）模式训练。在多轮对话和工具调用中，Kimi K3 要求将 API 返回的完整 assistant 消息原样传回 `messages`——包括 `reasoning_content` 和 `tool_calls`，而不仅仅是 `content`：
+Kimi K3 以保留思考历史（preserved thinking history）模式训练。在多轮对话和工具调用中，Kimi K3 要求将接口返回的完整助手（assistant）消息原样传回 `messages`——包括思考内容（`reasoning_content`）和工具调用（`tool_calls`），而不仅仅是回复内容（`content`）：
 
 ```python
 import openai
@@ -653,7 +653,7 @@ def chat_with_preserved_thinking(client: openai.OpenAI, model_name: str):
     return response.choices[0].message.content
 ```
 
-完整的指南和示例（视觉输入、结构化输出、partial 模式、工具选择、动态工具加载、上下文缓存）请参见 [Kimi K3 快速入门](https://platform.kimi.ai/docs/guide/kimi-k3-quickstart)和[思考强度](https://platform.kimi.ai/docs/guide/use-thinking-effort)。
+完整的指南和示例（视觉输入、结构化输出、部分补全（partial）模式、工具选择、动态工具加载、上下文缓存）请参见 [Kimi K3 快速入门](https://platform.kimi.ai/docs/guide/kimi-k3-quickstart)和[思考强度](https://platform.kimi.ai/docs/guide/use-thinking-effort)。
 
 ### 编码智能体框架
 
