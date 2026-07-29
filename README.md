@@ -25,6 +25,10 @@
 </p>
 
 
+[官方说明](https://kimi-k2.org/zh/blog/39-kimi-k3-weights-live)
+
+[模型权重](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket)
+
 ## 1. Model Introduction
 
 Kimi K3 is an open-weight, native multimodal agentic model and our most capable model to date. It is a 2.8T-parameter model built on Kimi Delta Attention (KDA) and Attention Residuals (AttnRes), with native vision capabilities and a 1-million-token context window. It is the world's first open 3T-class model, designed for frontier intelligence across long-horizon coding, knowledge work, and reasoning.
