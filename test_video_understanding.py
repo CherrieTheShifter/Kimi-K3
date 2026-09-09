@@ -8,8 +8,8 @@ import sys
 from video_understanding import VideoUnderstanding
 
 # === Configuration ===
-GITHUB_RAW_URL = "https://github.com/CherrieTheShifter/Kimi-K3/raw/main/cat-agent.mp4"
-LOCAL_VIDEO_PATH = "./cat-agent.mp4"
+GITHUB_RAW_URL = "https://github.com/CherrieTheShifter/Kimi-K3/raw/main/orange-cat-agent.mp4"
+LOCAL_VIDEO_PATH = "./orange-cat-agent.mp4"
 
 
 def download_video():
