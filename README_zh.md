@@ -32,6 +32,8 @@
 
 [模型权重](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket)
 
+> **使用本仓库的 Python 客户端？** 参见 [SDK.md](SDK.md)。
+
 ## 1. 模型介绍
 
 Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，也是我们迄今为止能力最强的模型。它是一个基于 Kimi 增量注意力（Kimi Delta Attention，KDA）和注意力残差（Attention Residuals，AttnRes）构建的 2.8T 参数模型，具备原生视觉能力和 100 万词元（token）的上下文窗口。它是全球首个开放的 3T 级别模型，旨在为长程编码、知识工作和推理等领域提供前沿智能。
