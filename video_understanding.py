@@ -1,17 +1,17 @@
 """
-Kimi K3 视频理解模块 —— 向后兼容入口
+Kimi K3 video understanding module - backwards-compatible entry point
 
-历史说明：
-- 早期本文件独立实现了视频理解（VideoUnderstanding 类），且使用了错误的 API 基址
-  api.moonshot.ai（正确应为 api.moonshot.cn）。
-- 现所有能力已统一到 kimi_multimodal.py 的 KimiClient，本文件仅做重导出，
-  避免破坏既有 import `from video_understanding import VideoUnderstanding`。
+History:
+- This file used to implement video understanding on its own (the VideoUnderstanding class),
+  against the wrong API base (api.moonshot.ai; the correct one is api.moonshot.cn).
+- All functionality now lives in KimiClient in kimi_multimodal.py. This file only re-exports,
+  so existing `from video_understanding import VideoUnderstanding` imports keep working.
 
-如需新功能（多轮对话、thinking history 保留等），请直接使用 KimiClient / ChatSession：
+For new features (multi-turn chat, preserved thinking history), use KimiClient / ChatSession directly:
     from kimi_multimodal import KimiClient, ChatSession, create_client
 """
 
 from kimi_multimodal import KimiClient, ChatSession, create_client, VideoUnderstanding
 
-# 保持旧有公开的 API 不变
+# Keep the previously public API unchanged
 __all__ = ["KimiClient", "VideoUnderstanding", "ChatSession", "create_client"]
