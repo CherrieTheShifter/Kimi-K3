@@ -13,133 +13,132 @@
   <a href="https://huggingface.co/moonshotai" target="_blank"><img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Moonshot%20AI-ffc107?color=ffc107&logoColor=white"/></a>
   <a href="https://twitter.com/kimi_moonshot" target="_blank"><img alt="Twitter Follow" src="https://img.shields.io/badge/Twitter-Kimi.ai-white?logo=x&logoColor=white"/></a>
   <a href="https://discord.gg/TYU2fdJykW" target="_blank"><img alt="Discord" src="https://img.shields.io/badge/Discord-Kimi.ai-white?logo=discord&logoColor=white"/></a>
-  <a href="https://modelscope.cn/organization/moonshotai" target="_blank"><img alt="ModelScope" src="https://img.shields.io/badge/ModelScope-Moonshot%20AI-white?labelColor=rgb(99%2C%2074%2C%20255)"/></a>
+  <a href="https://modelscope.cn/organization/moonshotai" target="_blank"><img alt="ModelScope" src="https://img.shields.io/badge/ModelScope-Moonshot%20AI-white?labelColor=rgb(99%2C%2074%2C%255)"/></a>
 </div>
 <div align="center" style="line-height: 1;">
   <a href="https://huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Kimi_K3-f5de53?&color=f5de53"/></a>
 </div>
 
-
 <p align="center">
-  <b>English</b> | <a href="README_zh.md">中文</a>
+  <a href="README.md">English</a> | <b>中文</b>
 </p>
 
 <p align="center">
-📰&nbsp;&nbsp;<a href="https://www.kimi.com/blog/kimi-k3">Tech Blog</a> | &nbsp;&nbsp;&nbsp; <b>📄&nbsp;&nbsp;<a href="k3_tech_report.pdf">Full Report</a></b>
+📰&nbsp;&nbsp;<a href="https://www.kimi.com/blog/kimi-k3">技术博客</a> | &nbsp;&nbsp;&nbsp; <b>📄&nbsp;&nbsp;<a href="k3_tech_report.pdf">完整技术报告</a></b>
 </p>
 
 
-## 1. Model Introduction
+## 1. 模型介绍
 
-Kimi K3 is an open-weight, native multimodal agentic model and our most capable model to date. It is a 2.8T-parameter model built on Kimi Delta Attention (KDA) and Attention Residuals (AttnRes), with native vision capabilities and a 1-million-token context window. It is the world's first open 3T-class model, designed for frontier intelligence across long-horizon coding, knowledge work, and reasoning.
+Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，也是我们迄今为止能力最强的模型。它是一个基于 Kimi 增量注意力（Kimi Delta Attention，KDA）和注意力残差（Attention Residuals，AttnRes）构建的 2.8T 参数模型，具备原生视觉能力和 100 万词元（token）的上下文窗口。它是全球首个开放的 3T 级别模型，旨在为长程编码、知识工作和推理等领域提供前沿智能。
 
-### Key Features
-- **New Architecture**: Kimi K3 is built on Kimi Delta Attention (KDA) and Attention Residuals (AttnRes), and scales up MoE sparsity with a Stable LatentMoE framework that activates 16 out of 896 experts — yielding an approximate 2.5× improvement in overall scaling efficiency over Kimi K2.
-- **Long-Horizon Coding**: Operating with minimal human oversight, Kimi K3 sustains long engineering sessions, navigates massive repositories, and orchestrates terminal tools — from GPU kernel optimization and compiler development to vision-in-the-loop game dev, CAD, and even chip design.
-- **Agentic Knowledge Work**: Kimi K3 advances end-to-end knowledge work, producing deep research with interactive visualizations, widgets and dashboards, and motion design and video editing, powered by its native multimodal architecture.
-- **Native Multimodality & Long Context**: Kimi K3 understands text, images, and video within the same model, and supports a 1-million-token context window.
-- **Open Frontier Weights**: We release the full Kimi K3 model weights under the Kimi K3 License, making frontier intelligence openly available for research, deployment, and further innovation.
-## 2. Model Summary
+### 核心特性
+- **全新架构**：Kimi K3 基于 Kimi 增量注意力（KDA）和注意力残差（AttnRes）构建，并通过稳定潜在混合专家（Stable LatentMoE）框架提升混合专家模型（MoE）的稀疏度，在 896 个专家中激活 16 个——相较 Kimi K2，整体扩展效率提升约 2.5 倍。
+- **长程编码**：在极少人工干预的情况下，Kimi K3 能够持续进行长时间的工程会话、驾驭超大规模代码仓库并编排终端工具——涵盖图形处理器（GPU）内核优化、编译器开发，乃至视觉参与的游戏开发、计算机辅助设计（CAD）甚至芯片设计。
+- **智能体知识工作**：Kimi K3 推动端到端知识工作的发展，依托其原生多模态架构，能够产出带有交互式可视化、组件和仪表盘的深度研究成果，以及动效设计与视频剪辑。
+- **原生多模态与长上下文**：Kimi K3 在同一个模型内理解文本、图像和视频，并支持 100 万词元的上下文窗口。
+- **开放前沿权重**：我们依据 Kimi K3 许可证发布 Kimi K3 的完整模型权重，让前沿智能开放地服务于研究、部署和进一步创新。
+## 2. 模型概要
 
 <div align="center">
 <table>
 <tbody>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Architecture</strong></td>
-<td align="center" style="vertical-align: middle; text-align: center">Mixture-of-Experts (MoE)</td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>架构</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center">混合专家模型（MoE）</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Total Parameters</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>总参数量</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">2.8T</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Activated Parameters</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>激活参数量</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">104B</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Number of Layers</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>层数</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">93</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Number of Dense Layers</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>稠密层数</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">1</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Attention-Layer Composition</strong></td>
-<td align="center" style="vertical-align: middle; text-align: center">69 KDA + 24 Gated MLA</td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>注意力层构成</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center">69 层增量注意力（KDA）+ 24 层门控多头潜在注意力（Gated MLA）</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Attention Hidden Dimension</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>注意力隐藏维度</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">7168</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Number of Attention Heads</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>注意力头数</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">96</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Latent MoE Dimension</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>潜在混合专家（Latent MoE）维度</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">3584</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>MoE Hidden Dimension</strong> (per Expert)</td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>混合专家（MoE）隐藏维度</strong>（每个专家）</td>
 <td align="center" style="vertical-align: middle; text-align: center">3072</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Number of Routed Experts</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>专家数量</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">896</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Routed Experts Selected per Token</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>每个词元选择的专家数</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">16</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Number of Shared Experts</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>共享专家数量</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">2</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Vocabulary Size</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>词表大小</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">160K</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Context Length</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>上下文长度</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">1048576</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Attention Mechanism</strong></td>
-<td align="center" style="vertical-align: middle; text-align: center">KDA &amp; Gated MLA</td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>注意力机制</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center">增量注意力（KDA）&amp; 门控多头潜在注意力（Gated MLA）</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Activation Function</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>激活函数</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">SiTU-GLU</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Vision Encoder</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>视觉编码器</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">MoonViT-V2</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Parameters of Vision Encoder</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>视觉编码器参数量</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">401M</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Quantization</strong></td>
-<td align="center" style="vertical-align: middle; text-align: center">MXFP4 weights / MXFP8 activations<br>(quantization-aware training)</td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>量化</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center">四位微缩浮点（MXFP4）权重 / 八位微缩浮点（MXFP8）激活<br>（量化感知训练）</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>Modality</strong></td>
-<td align="center" style="vertical-align: middle; text-align: center">Text, Image, Video</td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>模态</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center">文本、图像</td>
 </tr>
 </tbody>
 </table>
 </div>
 
 
-## 3. Evaluation Results
+## 3. 评测结果
 
 <div align="center">
 <table>
 <thead>
 <tr>
-<th align="center" style="text-align: center">Benchmark</th>
+<th align="center" style="text-align: center">基准测试</th>
 <th align="center" style="text-align: center"><sup>Kimi K3<br><sup>(max)</sup></sup></th>
 <th align="center" style="text-align: center"><sup>Claude Fable 5<br><sup>(max, w/ fallback)</sup></sup></th>
 <th align="center" style="text-align: center"><sup>GPT-5.6 Sol<br><sup>(max)</sup></sup></th>
@@ -150,7 +149,7 @@ Kimi K3 is an open-weight, native multimodal agentic model and our most capable 
 </thead>
 <tbody>
 <tr>
-<td align="center" colspan=7 style="text-align: center"><strong>Reasoning &amp; Knowledge</strong></td>
+<td align="center" colspan=7 style="text-align: center"><strong>推理与知识</strong></td>
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center">GPQA Diamond</td>
@@ -189,7 +188,7 @@ Kimi K3 is an open-weight, native multimodal agentic model and our most capable 
 <td align="center" style="vertical-align: middle; text-align: center">—</td>
 </tr>
 <tr>
-<td align="center" colspan=7 style="text-align: center"><strong>Coding</strong></td>
+<td align="center" colspan=7 style="text-align: center"><strong>编码</strong></td>
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center">DeepSWE</td>
@@ -273,7 +272,7 @@ Kimi K3 is an open-weight, native multimodal agentic model and our most capable 
 <td align="center" style="vertical-align: middle; text-align: center">64.2</td>
 </tr>
 <tr>
-<td align="center" colspan=7 style="text-align: center"><strong>Agentic</strong></td>
+<td align="center" colspan=7 style="text-align: center"><strong>智能体</strong></td>
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center">BrowseComp</td>
@@ -474,7 +473,7 @@ Kimi K3 is an open-weight, native multimodal agentic model and our most capable 
 <td align="center" style="vertical-align: middle; text-align: center">31.3</td>
 </tr>
 <tr>
-<td align="center" colspan=7 style="text-align: center"><strong>Vision</strong></td>
+<td align="center" colspan=7 style="text-align: center"><strong>视觉</strong></td>
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center">WorldVQA ForceAnswer</td>
@@ -571,56 +570,56 @@ Kimi K3 is an open-weight, native multimodal agentic model and our most capable 
 </div>
 
 <details>
-<summary><b>Footnotes</b></summary>
+<summary><b>脚注</b></summary>
 
-All Kimi K3 results are obtained with reasoning effort set to 'max' and temperature = 1.0. For single-step tasks, such as GPQA Diamond, HLE-Full, and vision benchmarks without tools, we set top-p = 0.95; for agentic tasks, we set top-p = 1.0. For HLE-Full, MMMU-Pro, CharXiv (RQ), MathVision, and ZeroBench, each cell reports the scores without and with tool augmentation (general tools for HLE-Full, Python for the vision benchmarks), in that order.
+Kimi K3 的所有结果均在推理强度（reasoning effort）设为 'max'、温度（temperature）= 1.0 的条件下获得。对于单步任务（如 GPQA Diamond、HLE-Full 以及不使用工具的视觉基准测试），我们设置核采样（top-p）= 0.95；对于智能体任务，我们设置核采样（top-p）= 1.0。对于 HLE-Full、MMMU-Pro、CharXiv (RQ)、MathVision 和 ZeroBench，每个单元格依次报告不使用和使用工具增强（HLE-Full 使用通用工具，视觉基准测试使用 Python）的分数。
 
-1. **Reasoning & knowledge benchmarks**
-   - **CritPt and AA-LCR.** Scores are cited from [Artificial Analysis](https://artificialanalysis.ai/) as of July 23, 2026.
-2. **Coding benchmarks**
-   - **DeepSWE.** Kimi K3 is evaluated with the Kimi Code harness. The GLM-5.2 score is taken from the [GLM-5.2 release blog](https://z.ai/blog/glm-5.2); all remaining scores are from the official [DeepSWE leaderboard](https://deepswe.datacurve.ai/), under which Kimi K3 attains 67.3 with the mini-SWE-agent harness. We report the DeepSWE v1.1 tasks.
-   - **Terminal-Bench 2.1.** Kimi K3 is evaluated with the Kimi Code harness. For all other models, we report the best score across harnesses: GLM-5.2 with Claude Code ([GLM-5.2 release blog](https://z.ai/blog/glm-5.2)); Claude Opus 4.8 and Claude Fable 5 with Terminus 2 ([Artificial Analysis](https://artificialanalysis.ai/evaluations/terminalbench-v2-1)); GPT-5.5 and GPT-5.6 Sol with Codex ([OpenAI](https://openai.com/index/previewing-gpt-5-6-sol/)).
-   - **ProgramBench.** Kimi K3 is evaluated with the Kimi Code harness. The GLM-5.2 score is from the [GLM-5.2 release blog](https://z.ai/blog/glm-5.2); all other scores are from [Vals AI](https://www.vals.ai/benchmarks/programbench).
-   - **SWE-Marathon.** Kimi K3, Claude Opus 4.8, and Claude Fable 5 are evaluated with the Claude Code harness; GPT-5.6 Sol is evaluated with the Codex harness. The GLM-5.2 score is from the [GLM-5.2 release blog](https://z.ai/blog/glm-5.2). Our evaluation is based on an H20-calibrated branch of the [official tasks](https://www.swe-marathon.org/) as of July 9, 2026, prior to the final v1.1 release: the Docker images, performance gates, and reference oracles for the GPU tasks have been recalibrated for H20, while the correctness and anti-cheat validators remain unchanged. Additionally, Claude Fable 5 hit fallbacks on 35% of the tasks in our evaluation, which may have negatively impacted its measured performance.
-   - **FrontierSWE.** Kimi K3 is evaluated with the Kimi Code harness and GPT-5.6 Sol with the Codex harness; all other results are from [FrontierSWE](https://www.frontierswe.com/). Dominance scores are recomputed from the raw scores using the official evaluation script and are current as of July 16, 2026.
-   - **PostTrainBench.** Scores for GLM-5.2, GPT-5.5, and Claude Opus 4.8 are adopted from the official [PostTrainBench](https://posttrainbench.com/) results. Kimi K3, Claude Fable 5, and GPT-5.6 Sol are evaluated with the official Harbor implementation at maximum reasoning effort, averaged over three runs on H20 GPUs (instead of H100 in the official setting) — Kimi K3 and Claude Fable 5 with the Claude Code harness, and GPT-5.6 Sol with the Codex harness.
-   - **MLS-Bench-Lite.** Kimi K3 is evaluated with the Kimi Code harness; GLM-5.2 and the Claude models with the Claude Code harness; GPT-5.5 and GPT-5.6 Sol with the Codex harness.
-   - **SciCode.** Scores are cited from [Artificial Analysis](https://artificialanalysis.ai/) as of July 23, 2026.
-   - **Kimi Code Bench 2.0 (in-house).** Kimi K3 is evaluated with the Kimi Code harness (it attains 73.7 with the Claude Code harness); GLM-5.2, Claude Opus 4.8, and Claude Fable 5 with the Claude Code harness; GPT-5.5 and GPT-5.6 Sol with the Codex harness. All models are evaluated at maximum reasoning effort, except GPT-5.5, which uses the "xhigh" setting. As the benchmark includes cybersecurity and safety-related tasks, we also disclose the fraction of refused or fallback tasks: Claude Fable 5 hit 13 fallbacks and 1 refusal out of 80 tasks; 10 refusals out of 80 tasks entered GPT-5.6 Sol's cyber guard; GPT-5.5 had 3 refusals out of 80 tasks.
-3. **Agentic benchmarks**
-   - **OfficeQA Pro.** Each test case provides the agent with the entire PDF corpus, with all PDFs rendered as images and no machine-readable text available.
-   - **OfficeQA Pro and SpreadsheetBench 2.** Kimi K3, GLM-5.2, Claude Opus 4.8, and Claude Fable 5 are evaluated with the Claude Code harness; GPT-5.5 and GPT-5.6 Sol are evaluated with the Codex harness.
-   - **MCP-Atlas.** All models are evaluated on the 500-task public subset with a 100-turn limit, using Gemini 3.1 Pro as the judge.
-   - **AutomationBench.** All models are evaluated on the 600-task public subset, following the official GitHub setup in all other respects.
-   - **BrowseComp.** We adopt a context-compaction strategy triggered at 300K tokens. When evaluated with the full 1M-token context window and no context management, Kimi K3 achieves a score of 90.4. The results of Claude Fable 5, Claude Opus 4.8, GPT-5.6 Sol, and GPT-5.5 are cited from [Anthropic](https://www.anthropic.com/news/claude-fable-5-mythos-5) and [OpenAI](https://openai.com/index/gpt-5-6/).
-   - **GDPval-AA v2, AA-Briefcase, τ³-Banking, Harvey Lab-AA, and APEX-Agents.** Scores are cited from [Artificial Analysis](https://artificialanalysis.ai/) and the [APEX-Agents leaderboard](https://www.mercor.com/apex/apex-agents-leaderboard/) as of July 23, 2026. For Harvey Lab-AA, we report the criterion pass rate.
-   - **CorpFin v2, Finance Agent v2, and Legal Research Bench.** Scores are cited from [Vals AI](https://www.vals.ai/).
-   - **Agents' Last Exam.** Scores are cited from the [official leaderboard](https://agents-last-exam.org/leaderboard) as of July 23, 2026; we report the leaderboard's primary pass-rate metric. On the leaderboard, each model is paired with a specific harness: Kimi K3 with Kimi Code; GPT-5.6 Sol and GPT-5.5 with Codex; Claude Fable 5, Claude Opus 4.8, and GLM-5.2 with Claude Code. <sup>†</sup> The Claude Fable 5 entry runs at xhigh effort with 40% of tasks annotated as downgraded.
-4. **Multimodal benchmarks**
-   - Except for ZeroBench, which follows the official setting and is run five times, all multimodal scores are averaged over three runs. MMMU-Pro is evaluated following the official protocol, preserving the original input order and prepending images to the text input.
-   - **PerceptionBench** is an in-house benchmark that focuses on atomic visual perception capabilities.
+1. **推理与知识基准测试**
+   - **CritPt 和 AA-LCR。** 分数引自 [Artificial Analysis](https://artificialanalysis.ai/)，截至 2026 年 7 月 23 日。
+2. **编码基准测试**
+   - **DeepSWE。** Kimi K3 使用 Kimi Code 框架进行评测。GLM-5.2 的分数取自 [GLM-5.2 发布博客](https://z.ai/blog/glm-5.2)；其余所有分数均来自官方 [DeepSWE 排行榜](https://deepswe.datacurve.ai/)，Kimi K3 在该排行榜上使用 mini-SWE-agent 框架取得 67.3 分。我们报告的是 DeepSWE v1.1 任务的结果。
+   - **Terminal-Bench 2.1。** Kimi K3 使用 Kimi Code 框架进行评测。对于其他所有模型，我们报告其在各框架下的最佳分数：GLM-5.2 使用 Claude Code（[GLM-5.2 发布博客](https://z.ai/blog/glm-5.2)）；Claude Opus 4.8 和 Claude Fable 5 使用 Terminus 2（[Artificial Analysis](https://artificialanalysis.ai/evaluations/terminalbench-v2-1)）；GPT-5.5 和 GPT-5.6 Sol 使用 Codex（[OpenAI](https://openai.com/index/previewing-gpt-5-6-sol/)）。
+   - **ProgramBench。** Kimi K3 使用 Kimi Code 框架进行评测。GLM-5.2 的分数来自 [GLM-5.2 发布博客](https://z.ai/blog/glm-5.2)；其他所有分数来自 [Vals AI](https://www.vals.ai/benchmarks/programbench)。
+   - **SWE-Marathon。** Kimi K3、Claude Opus 4.8 和 Claude Fable 5 使用 Claude Code 框架进行评测；GPT-5.6 Sol 使用 Codex 框架进行评测。GLM-5.2 的分数来自 [GLM-5.2 发布博客](https://z.ai/blog/glm-5.2)。我们的评测基于[官方任务](https://www.swe-marathon.org/)在 2026 年 7 月 9 日（最终 v1.1 版本发布之前）的一个针对 H20 校准的分支：GPU 任务的 Docker 镜像、性能门槛和参考基准已针对 H20 重新校准，而正确性和防作弊验证器保持不变。此外，在我们的评测中，Claude Fable 5 在 35% 的任务上触发了回退（fallback），这可能对其测得的性能产生负面影响。
+   - **FrontierSWE。** Kimi K3 使用 Kimi Code 框架、GPT-5.6 Sol 使用 Codex 框架进行评测；其他所有结果来自 [FrontierSWE](https://www.frontierswe.com/)。优势分数（Dominance scores）使用官方评测脚本从原始分数重新计算，数据截至 2026 年 7 月 16 日。
+   - **PostTrainBench。** GLM-5.2、GPT-5.5 和 Claude Opus 4.8 的分数采用官方 [PostTrainBench](https://posttrainbench.com/) 结果。Kimi K3、Claude Fable 5 和 GPT-5.6 Sol 使用官方 Harbor 实现，在最大推理强度下评测，在 H20 GPU（而非官方设置中的 H100）上运行三次取平均——其中 Kimi K3 和 Claude Fable 5 使用 Claude Code 框架，GPT-5.6 Sol 使用 Codex 框架。
+   - **MLS-Bench-Lite。** Kimi K3 使用 Kimi Code 框架进行评测；GLM-5.2 和 Claude 系列模型使用 Claude Code 框架；GPT-5.5 和 GPT-5.6 Sol 使用 Codex 框架。
+   - **SciCode。** 分数引自 [Artificial Analysis](https://artificialanalysis.ai/)，截至 2026 年 7 月 23 日。
+   - **Kimi Code Bench 2.0（内部基准测试）。** Kimi K3 使用 Kimi Code 框架进行评测（使用 Claude Code 框架时取得 73.7 分）；GLM-5.2、Claude Opus 4.8 和 Claude Fable 5 使用 Claude Code 框架；GPT-5.5 和 GPT-5.6 Sol 使用 Codex 框架。所有模型均在最大推理强度下评测，GPT-5.5 除外（使用 "xhigh" 设置）。由于该基准测试包含网络安全和安全相关任务，我们同时披露被拒绝或触发回退的任务比例：Claude Fable 5 在 80 个任务中触发 13 次回退和 1 次拒绝；GPT-5.6 Sol 的网络安全防护在 80 个任务中触发 10 次拒绝；GPT-5.5 在 80 个任务中出现 3 次拒绝。
+3. **智能体基准测试**
+   - **OfficeQA Pro。** 每个测试用例向智能体提供完整的 PDF 语料库，所有 PDF 均以图像形式渲染，不提供机器可读文本。
+   - **OfficeQA Pro 和 SpreadsheetBench 2。** Kimi K3、GLM-5.2、Claude Opus 4.8 和 Claude Fable 5 使用 Claude Code 框架进行评测；GPT-5.5 和 GPT-5.6 Sol 使用 Codex 框架进行评测。
+   - **MCP-Atlas。** 所有模型均在 500 个任务的公开子集上评测，回合上限为 100，使用 Gemini 3.1 Pro 作为评判模型。
+   - **AutomationBench。** 所有模型均在 600 个任务的公开子集上评测，其余方面均遵循官方 GitHub 设置。
+   - **BrowseComp。** 我们采用在 30 万词元时触发的上下文压缩策略。在使用完整 100 万词元上下文窗口且不进行上下文管理的情况下评测时，Kimi K3 取得 90.4 分。Claude Fable 5、Claude Opus 4.8、GPT-5.6 Sol 和 GPT-5.5 的结果引自 [Anthropic](https://www.anthropic.com/news/claude-fable-5-mythos-5) 和 [OpenAI](https://openai.com/index/gpt-5-6/)。
+   - **GDPval-AA v2、AA-Briefcase、τ³-Banking、Harvey Lab-AA 和 APEX-Agents。** 分数引自 [Artificial Analysis](https://artificialanalysis.ai/) 和 [APEX-Agents 排行榜](https://www.mercor.com/apex/apex-agents-leaderboard/)，截至 2026 年 7 月 23 日。对于 Harvey Lab-AA，我们报告标准通过率（criterion pass rate）。
+   - **CorpFin v2、Finance Agent v2 和 Legal Research Bench。** 分数引自 [Vals AI](https://www.vals.ai/)。
+   - **Agents' Last Exam。** 分数引自[官方排行榜](https://agents-last-exam.org/leaderboard)，截至 2026 年 7 月 23 日；我们报告排行榜的主要通过率指标。在排行榜上，每个模型与特定框架配对：Kimi K3 使用 Kimi Code；GPT-5.6 Sol 和 GPT-5.5 使用 Codex；Claude Fable 5、Claude Opus 4.8 和 GLM-5.2 使用 Claude Code。<sup>†</sup> Claude Fable 5 条目以 xhigh 强度运行，其中 40% 的任务被标注为降级。
+4. **多模态基准测试**
+   - 除 ZeroBench 遵循官方设置运行五次外，所有多模态分数均为三次运行的平均值。MMMU-Pro 按照官方协议评测，保留原始输入顺序并将图像置于文本输入之前。
+   - **PerceptionBench** 是一个专注于原子级视觉感知能力的内部基准测试。
 
 </details>
 
-## 4. Native MXFP4 Quantization
+## 4. 原生四位微缩浮点（MXFP4）量化
 
-Kimi K3 applies quantization-aware training from the SFT stage onward, using MXFP4 weights with MXFP8 activations for broad hardware compatibility.
+Kimi K3 从监督微调（SFT）阶段起就采用量化感知训练，使用四位微缩浮点（MXFP4）权重与八位微缩浮点（MXFP8）激活，以实现广泛的硬件兼容性。
 
-## 5. Deployment
+## 5. 部署
 
 > [!Note]
-> You can access Kimi K3's API on https://platform.kimi.ai by selecting `kimi-k3`, and we provide an OpenAI/Anthropic-compatible API for you. Currently, Kimi K3 is recommended to run on the following inference engines:
+> 您可以在 https://platform.kimi.ai 上选择 `kimi-k3` 来访问 Kimi K3 的应用程序接口（API），我们为您提供 OpenAI/Anthropic 兼容的接口。目前，推荐使用以下推理引擎运行 Kimi K3：
 
-- [vLLM](https://github.com/vllm-project/vllm) — see [recipes](https://recipes.vllm.ai/moonshotai/Kimi-K3)
-- [SGLang](https://github.com/sgl-project/sglang) — see [cookbook](https://docs.sglang.io/cookbook/autoregressive/Moonshotai/Kimi-K3)
-- [TokenSpeed](https://lightseek.org/tokenspeed) — see [recipes](https://lightseek.org/tokenspeed/recipes/models#kimi-k3)
+- [vLLM](https://github.com/vllm-project/vllm) — 参见 [recipes](https://recipes.vllm.ai/moonshotai/Kimi-K3)
+- [SGLang](https://github.com/sgl-project/sglang) — 参见 [cookbook](https://docs.sglang.io/cookbook/autoregressive/Moonshotai/Kimi-K3)
+- [TokenSpeed](https://lightseek.org/tokenspeed) — 参见 [recipes](https://lightseek.org/tokenspeed/recipes/models#kimi-k3)
 
 ---
-## 6. Model Usage
+## 6. 模型使用
 
-Kimi K3 always has thinking enabled, and will return `reasoning_content`. Thinking effort is configured with the top-level `reasoning_effort` request field, which supports `"low"`, `"high"`, and `"max"` (default `"max"`).
+Kimi K3 始终开启思考（thinking）模式，并会返回 `reasoning_content`。思考强度通过请求中的顶层字段 `reasoning_effort` 配置，支持 `"low"`、`"high"` 和 `"max"`（默认为 `"max"`）。
 
-Kimi K3 was trained in the preserved thinking history mode. For multi-turn conversations and tool calls, Kimi K3 requires the complete assistant message returned by the API to be passed back to `messages` as-is — including `reasoning_content` and `tool_calls`, not just `content`:
+Kimi K3 以保留思考历史（preserved thinking history）模式训练。在多轮对话和工具调用中，Kimi K3 要求将接口返回的完整助手（assistant）消息原样传回 `messages`——包括思考内容（`reasoning_content`）和工具调用（`tool_calls`），而不仅仅是回复内容（`content`）：
 
 ```python
 import openai
@@ -650,25 +649,25 @@ def chat_with_preserved_thinking(client: openai.OpenAI, model_name: str):
         reasoning_effort="max",
     )
     # the assistant should mention 215 and 222 that appear in the prior reasoning content
-    print(f"response: {response.choices[0].message.reasoning_content}")
+    print(f"response: {response.choices[0].message.reasoning}")
     return response.choices[0].message.content
 ```
 
-For full guides and examples (vision input, structured output, partial mode, tool choice, dynamic tool loading, context caching), see the [Kimi K3 Quickstart](https://platform.kimi.ai/docs/guide/kimi-k3-quickstart) and [Thinking Effort](https://platform.kimi.ai/docs/guide/use-thinking-effort).
+完整的指南和示例（视觉输入、结构化输出、部分补全（partial）模式、工具选择、动态工具加载、上下文缓存）请参见 [Kimi K3 快速入门](https://platform.kimi.ai/docs/guide/kimi-k3-quickstart)和[思考强度](https://platform.kimi.ai/docs/guide/use-thinking-effort)。
 
-### Coding Agent Framework
+### 编码智能体框架
 
-Kimi K3 works best with [Kimi Code CLI](https://www.kimi.com/code) as its agent framework. We warmly invite you to give it a try — run Kimi Code in your terminal and select Kimi K3 using the `/model` command. We hope you enjoy building with Kimi K3, and we would love to hear your feedback!
+Kimi K3 与 [Kimi Code CLI](https://www.kimi.com/code) 智能体框架搭配使用效果最佳。我们诚挚邀请您试用——在终端中运行 Kimi Code，并使用 `/model` 命令选择 Kimi K3。希望您享受与 Kimi K3 一起构建的过程，我们也期待听到您的反馈！
 
-
----
-
-## 7. License
-
-Both the code repository and the model weights are released under the [Kimi K3 License](LICENSE).
 
 ---
 
-## 8. Contact Us
+## 7. 许可证
 
-If you have any questions, please reach out at [support@moonshot.ai](mailto:support@moonshot.ai).
+代码仓库和模型权重均依据 [Kimi K3 许可证](LICENSE)发布。
+
+---
+
+## 8. 联系我们
+
+如有任何问题，请通过 [support@moonshot.ai](mailto:support@moonshot.ai) 联系我们。
