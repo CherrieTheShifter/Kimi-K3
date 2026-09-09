@@ -5,13 +5,13 @@ __pycache__/
 .venv/
 venv/
 
-# 本地生成的产物（按需自行保留，勿入库）
+# Locally generated output - keep out of the repo
 generated_image.png
 generated_video.mp4
-橘猫-agent.mp4
-橘猫-cli.mp4
+cat-agent.mp4
+cat-cli.mp4
 
-# 工具/环境目录
+# Tool and environment directories
 .claude/
 .workbuddy/
 .idea/
