@@ -13,7 +13,7 @@
   <a href="https://huggingface.co/moonshotai" target="_blank"><img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Moonshot%20AI-ffc107?color=ffc107&logoColor=white"/></a>
   <a href="https://twitter.com/kimi_moonshot" target="_blank"><img alt="Twitter Follow" src="https://img.shields.io/badge/Twitter-Kimi.ai-white?logo=x&logoColor=white"/></a>
   <a href="https://discord.gg/TYU2fdJykW" target="_blank"><img alt="Discord" src="https://img.shields.io/badge/Discord-Kimi.ai-white?logo=discord&logoColor=white"/></a>
-  <a href="https://modelscope.cn/organization/moonshotai" target="_blank"><img alt="ModelScope" src="https://img.shields.io/badge/ModelScope-Moonshot%20AI-white?labelColor=rgb(99%2C%2074%2C%255)"/></a>
+  <a href="https://modelscope.cn/organization/moonshotai" target="_blank"><img alt="ModelScope" src="https://img.shields.io/badge/ModelScope-Moonshot%20AI-white?labelColor=rgb(99%2C%2074%2C%20255)"/></a>
 </div>
 <div align="center" style="line-height: 1;">
   <a href="https://huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Kimi_K3-f5de53?&color=f5de53"/></a>
@@ -27,6 +27,10 @@
 📰&nbsp;&nbsp;<a href="https://www.kimi.com/blog/kimi-k3">技术博客</a> | &nbsp;&nbsp;&nbsp; <b>📄&nbsp;&nbsp;<a href="k3_tech_report.pdf">完整技术报告</a></b>
 </p>
 
+
+[官方说明](https://kimi-k2.org/zh/blog/39-kimi-k3-weights-live)
+
+[模型权重](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket)
 
 ## 1. 模型介绍
 
@@ -84,11 +88,11 @@ Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，�
 <td align="center" style="vertical-align: middle; text-align: center">3072</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>专家数量</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>路由专家数量</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">896</td>
 </tr>
 <tr>
-<td align="center" style="vertical-align: middle; text-align: center"><strong>每个词元选择的专家数</strong></td>
+<td align="center" style="vertical-align: middle; text-align: center"><strong>每个词元选择的路由专家数</strong></td>
 <td align="center" style="vertical-align: middle; text-align: center">16</td>
 </tr>
 <tr>
@@ -125,7 +129,7 @@ Kimi K3 是一个开放权重的原生多模态智能体（Agentic）模型，�
 </tr>
 <tr>
 <td align="center" style="vertical-align: middle; text-align: center"><strong>模态</strong></td>
-<td align="center" style="vertical-align: middle; text-align: center">文本、图像</td>
+<td align="center" style="vertical-align: middle; text-align: center">文本、图像、视频</td>
 </tr>
 </tbody>
 </table>
