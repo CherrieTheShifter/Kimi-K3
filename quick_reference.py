@@ -132,7 +132,7 @@ def analyze_my_video(video_path: str):
     print("\n\nAnalysis complete.")
 
 # Run the example
-# analyze_my_video("./cat-agent.mp4")
+# analyze_my_video("./orange-cat-agent.mp4")
 
 # ============================================================
 # File layout
