@@ -8,8 +8,8 @@ venv/
 # Locally generated output - keep out of the repo
 generated_image.png
 generated_video.mp4
-cat-agent.mp4
-cat-cli.mp4
+orange cat-agent.mp4
+orange cat-cli.mp4
 
 # Tool and environment directories
 .claude/
