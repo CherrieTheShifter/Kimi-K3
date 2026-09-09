@@ -1,88 +1,88 @@
 """
-Kimi K3 视频理解 - 快速参考
+Kimi K3 video understanding - quick reference
 """
 
 # ============================================================
-# 安装依赖
+# Install dependencies
 # ============================================================
 # pip3 install openai requests
 
 # ============================================================
-# 设置环境变量
+# Set the environment variable
 # ============================================================
 # export KIMI_API_KEY="sk-your-api-key-here"
-# API key 从 https://platform.kimi.ai 获取
+# Get an API key at https://platform.kimi.ai
 
 # ============================================================
-# 快速开始
+# Quick start
 # ============================================================
 
 from video_understanding import VideoUnderstanding, create_client
 
-# 方式1: 使用环境变量
+# Option 1: use the environment variable
 client = create_client()
 
-# 方式2: 直接传入API密钥
+# Option 2: pass the API key directly
 client = VideoUnderstanding(api_key="sk-your-api-key")
 
 # ============================================================
-# 基础用法
+# Basic usage
 # ============================================================
 
-# 快速描述视频（非流式）
+# Quick video description (non-streaming)
 result = client.describe_video("./video.mp4")
 print(result)
 
-# 流式输出
+# Streaming output
 for chunk in client.analyze_video(
     "./video.mp4",
-    prompt="描述视频内容",
+    prompt="Describe the video content",
     stream=True
 ):
     print(chunk, end="", flush=True)
 
 # ============================================================
-# 支持的视频源
+# Supported video sources
 # ============================================================
 
-# 1. 本地文件
+# 1. Local file
 client.describe_video("./my_video.mp4")
 
 # 2. HTTP/HTTPS URL
 client.describe_video("https://example.com/video.mp4")
 
-# 3. Base64编码
+# 3. Base64-encoded
 client.describe_video("base64:IGluZGV4X29mX2Jhc2U2NA==")
 
 # ============================================================
-# 预设分析模式
+# Preset analysis modes
 # ============================================================
 
-# 基础描述
+# Basic description
 client.describe_video("./video.mp4")
 
-# 时间线分析
+# Timeline analysis
 client.analyze_timeline("./video.mp4")
 
-# 关键帧提取
+# Key-frame extraction
 client.extract_key_frames("./video.mp4")
 
-# 情感分析
+# Sentiment analysis
 client.analyze_emotion("./video.mp4")
 
-# 问答
-client.answer_question("./video.mp4", "视频里有什么？")
+# Q&A
+client.answer_question("./video.mp4", "What is in the video?")
 
 # ============================================================
-# 自定义提示词
+# Custom prompt
 # ============================================================
 
 custom_prompt = """
-请从以下角度分析视频：
-1. 画面内容
-2. 声音/音乐
-3. 情感氛围
-4. 技术亮点
+Analyse the video from these angles:
+1. On-screen content
+2. Sound and music
+3. Mood and atmosphere
+4. Technical highlights
 """
 
 result = client.analyze_video(
@@ -93,53 +93,53 @@ result = client.analyze_video(
 print(result)
 
 # ============================================================
-# 高级配置
+# Advanced configuration
 # ============================================================
 
-# 调整推理强度
+# Adjust the reasoning effort
 client.analyze_video(
     "./video.mp4",
     reasoning_effort="low"    # "low", "medium", "high"
 )
 
-# 使用不同的模型
+# Use a different model
 client = VideoUnderstanding(model="kimi-k3")
 
 # ============================================================
-# 完整示例
+# Full example
 # ============================================================
 
 def analyze_my_video(video_path: str):
-    """分析视频的完整示例"""
+    """A complete video-analysis example"""
     client = create_client()
 
-    print("正在分析视频...")
+    print("Analyzing video...")
 
-    # 基础描述
-    print("\n【快速描述】")
+    # Basic description
+    print("\n[Quick description]")
     desc = client.describe_video(video_path)
     print(desc)
 
-    # 详细分析
-    print("\n【详细分析】")
+    # Detailed analysis
+    print("\n[Detailed analysis]")
     for chunk in client.analyze_video(
         video_path,
-        prompt="请详细分析这个视频的各个方面。",
+        prompt="Analyse every aspect of this video in detail.",
         stream=True
     ):
         print(chunk, end="", flush=True)
 
-    print("\n\n分析完成!")
+    print("\n\nAnalysis complete.")
 
-# 运行示例
-# analyze_my_video("./橘猫-agent.mp4")
+# Run the example
+# analyze_my_video("./cat-agent.mp4")
 
 # ============================================================
-# 文件结构
+# File layout
 # ============================================================
 #
-# video_understanding.py  - 核心模块（VideoUnderstanding类）
-# test_video_understanding.py - 功能测试脚本
-# example_usage.py         - 使用示例集合
-# quick_reference.py       - 本文件（快速参考）
+# video_understanding.py  - core module (VideoUnderstanding class)
+# test_video_understanding.py - feature test script
+# example_usage.py         - collection of usage examples
+# quick_reference.py       - this file (quick reference)
 #
