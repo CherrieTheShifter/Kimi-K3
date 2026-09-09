@@ -1,26 +1,26 @@
 """
-Kimi K3 视频理解测试脚本
-测试各种视频理解功能，包括内容描述、时间线分析、情感分析等。
+Kimi K3 video understanding - test script
+Tests the video understanding features: description, timeline analysis, sentiment analysis, and more.
 """
 
 import os
 import sys
 from video_understanding import VideoUnderstanding
 
-# === 配置 ===
-GITHUB_RAW_URL = "https://github.com/1982167424-art/Kimi-K3/raw/main/橘猫-agent.mp4"
-LOCAL_VIDEO_PATH = "./橘猫-agent.mp4"
+# === Configuration ===
+GITHUB_RAW_URL = "https://github.com/CherrieTheShifter/Kimi-K3/raw/main/cat-agent.mp4"
+LOCAL_VIDEO_PATH = "./cat-agent.mp4"
 
 
 def download_video():
-    """下载测试视频"""
+    """Download the test video"""
     import requests
 
     if os.path.exists(LOCAL_VIDEO_PATH):
-        print(f"[1/3] 视频已存在，跳过下载: {LOCAL_VIDEO_PATH}")
+        print(f"[1/3] Video already present, skipping download: {LOCAL_VIDEO_PATH}")
         return
 
-    print(f"[1/3] 正在从 GitHub 下载视频...")
+    print(f"[1/3] Downloading video from GitHub...")
     resp = requests.get(GITHUB_RAW_URL, stream=True, timeout=120)
     resp.raise_for_status()
 
@@ -32,22 +32,22 @@ def download_video():
             downloaded += len(chunk)
             if total > 0:
                 pct = downloaded * 100 // total
-                print(f"\r  下载进度: {pct}% ({downloaded // 1024}KB / {total // 1024}KB)", end="", flush=True)
-    print(f"\n  下载完成: {LOCAL_VIDEO_PATH} ({downloaded // 1024}KB)")
+                print(f"\r  Download progress: {pct}% ({downloaded // 1024}KB / {total // 1024}KB)", end="", flush=True)
+    print(f"\n  Download complete: {LOCAL_VIDEO_PATH} ({downloaded // 1024}KB)")
 
 
 def test_basic_understanding():
-    """测试基础视频理解"""
+    """Test basic video understanding"""
     print("\n" + "=" * 60)
-    print("测试 1: 基础视频理解（流式输出）")
+    print("Test 1: basic video understanding (streaming)")
     print("=" * 60)
 
     client = VideoUnderstanding()
 
-    print("\n[流式输出]")
+    print("\n[streaming output]")
     for chunk in client.analyze_video(
         LOCAL_VIDEO_PATH,
-        prompt="请详细描述这个视频的内容，包括画面、动作和氛围。",
+        prompt="Describe this video in detail: the imagery, the action, and the atmosphere.",
         stream=True
     ):
         print(chunk, end="", flush=True)
@@ -55,9 +55,9 @@ def test_basic_understanding():
 
 
 def test_quick_describe():
-    """测试快速描述"""
+    """Test quick description"""
     print("\n" + "=" * 60)
-    print("测试 2: 快速视频描述")
+    print("Test 2: quick video description")
     print("=" * 60)
 
     client = VideoUnderstanding()
@@ -66,9 +66,9 @@ def test_quick_describe():
 
 
 def test_timeline():
-    """测试时间线分析"""
+    """Test timeline analysis"""
     print("\n" + "=" * 60)
-    print("测试 3: 时间线分析")
+    print("Test 3: timeline analysis")
     print("=" * 60)
 
     client = VideoUnderstanding()
@@ -77,9 +77,9 @@ def test_timeline():
 
 
 def test_key_frames():
-    """测试关键帧提取"""
+    """Test key-frame extraction"""
     print("\n" + "=" * 60)
-    print("测试 4: 关键帧提取")
+    print("Test 4: key-frame extraction")
     print("=" * 60)
 
     client = VideoUnderstanding()
@@ -88,9 +88,9 @@ def test_key_frames():
 
 
 def test_emotion_analysis():
-    """测试情感分析"""
+    """Test sentiment analysis"""
     print("\n" + "=" * 60)
-    print("测试 5: 情感/氛围分析")
+    print("Test 5: sentiment / atmosphere analysis")
     print("=" * 60)
 
     client = VideoUnderstanding()
@@ -99,36 +99,36 @@ def test_emotion_analysis():
 
 
 def test_qa():
-    """测试问答"""
+    """Test Q&A"""
     print("\n" + "=" * 60)
-    print("测试 6: 视频问答")
+    print("Test 6: video Q&A")
     print("=" * 60)
 
     client = VideoUnderstanding()
     questions = [
-        "视频里有几个人？",
-        "视频的背景音乐是什么类型的？",
-        "视频是在室内还是室外拍摄的？"
+        "How many people are in the video?",
+        "What kind of background music does it use?",
+        "Was it filmed indoors or outdoors?"
     ]
 
     for q in questions:
-        print(f"\n问题: {q}")
+        print(f"\nQuestion: {q}")
         answer = client.answer_question(LOCAL_VIDEO_PATH, q)
-        print(f"回答: {answer}")
+        print(f"Answer: {answer}")
 
 
 def test_custom_prompt():
-    """测试自定义提示"""
+    """Test a custom prompt"""
     print("\n" + "=" * 60)
-    print("测试 7: 自定义提示词分析")
+    print("Test 7: analysis with a custom prompt")
     print("=" * 60)
 
     client = VideoUnderstanding()
-    custom_prompt = """请以专业的视频分析师角度，从以下几个维度分析这个视频：
-1. 画面构图和镜头运用
-2. 色彩搭配和视觉风格
-3. 叙事结构和节奏
-4. 创意亮点和可改进之处"""
+    custom_prompt = """As a professional video analyst, assess this video across these dimensions:
+1. Composition and camera work
+2. Colour palette and visual style
+3. Narrative structure and pacing
+4. Creative highlights and areas to improve"""
 
     result = client.analyze_video(
         LOCAL_VIDEO_PATH,
@@ -139,58 +139,58 @@ def test_custom_prompt():
 
 
 def main():
-    """主测试流程"""
+    """Main test flow"""
     print("=" * 60)
-    print("Kimi K3 视频理解功能完整测试")
+    print("Kimi K3 video understanding - full tests")
     print("=" * 60)
 
-    # 下载视频
+    # Download the video
     download_video()
 
-    # 检查API密钥
+    # Check the API key
     if not os.environ.get("KIMI_API_KEY"):
-        print("\n错误: 请先设置环境变量 KIMI_API_KEY")
+        print("\nError: set the KIMI_API_KEY environment variable first")
         print("  export KIMI_API_KEY=\"your_api_key\"")
-        print("  API key 从 https://platform.kimi.ai 获取")
+        print("  Get an API key at https://platform.kimi.ai")
         sys.exit(1)
 
-    # 运行测试
+    # Run the tests
     tests = [
-        ("1", "基础理解", test_basic_understanding),
-        ("2", "快速描述", test_quick_describe),
-        ("3", "时间线", test_timeline),
-        ("4", "关键帧", test_key_frames),
-        ("5", "情感分析", test_emotion_analysis),
-        ("6", "问答", test_qa),
-        ("7", "自定义提示", test_custom_prompt),
-        ("all", "全部测试", None),
+        ("1", "Basic understanding", test_basic_understanding),
+        ("2", "Quick description", test_quick_describe),
+        ("3", "Timeline", test_timeline),
+        ("4", "Key frames", test_key_frames),
+        ("5", "Sentiment analysis", test_emotion_analysis),
+        ("6", "Q&A", test_qa),
+        ("7", "Custom prompt", test_custom_prompt),
+        ("all", "All tests", None),
     ]
 
-    print("\n可用测试:")
+    print("\nAvailable tests:")
     for num, name, _ in tests:
         print(f"  {num}. {name}")
 
-    choice = input("\n请选择要运行的测试 (输入数字或 'all'): ").strip()
+    choice = input("\nChoose a test to run (number or 'all'): ").strip()
 
     if choice == "all":
         for num, name, test_func in tests[:-1]:
             try:
                 test_func()
             except Exception as e:
-                print(f"\n测试 {num} ({name}) 出错: {e}")
+                print(f"\nTest {num} ({name}) failed: {e}")
     else:
         for num, name, test_func in tests:
             if choice == num and test_func:
                 try:
                     test_func()
                 except Exception as e:
-                    print(f"\n测试出错: {e}")
+                    print(f"\nTest failed: {e}")
                 break
         else:
-            print(f"无效的选择: {choice}")
+            print(f"Invalid choice: {choice}")
 
     print("\n" + "=" * 60)
-    print("测试完成！")
+    print("Tests complete.")
     print("=" * 60)
 
 
