@@ -1,17 +1,18 @@
 """
-ChatSession 离线单元测试（无需 API key / 网络）。
+ChatSession offline unit tests (no API key or network required).
 
-验证：
-1. 多轮对话中，assistant 消息（含 reasoning_content）被原样保留到历史，符合 K3 的 thinking history 要求。
-2. 流式接口能把 reasoning 与 content 分开产出。
-3. reset() 仅保留 system 消息。
-4. 默认 reasoning_effort 为 "max"，且会传给底层 API。
+Verifies:
+1. Across turns, the assistant message (including reasoning_content) is kept in history as-is,
+   as K3's preserved thinking history requires.
+2. The streaming interface yields reasoning and content separately.
+3. reset() keeps only the system message.
+4. reasoning_effort defaults to "max" and is passed to the underlying API.
 """
 
 from kimi_multimodal import KimiClient, ChatSession
 
 
-# ============ Mock OpenAI 客户端 ============
+# ============ Mock OpenAI client ============
 
 class _FakeDelta:
     def __init__(self, content=None, reasoning_content=None):
@@ -53,12 +54,12 @@ class _FakeCompletions:
         if kwargs.get("stream"):
             return self._stream()
         return _FakeCompletion(
-            _FakeMessage(content="这是回答", reasoning_content="[思考] 我来分析一下")
+            _FakeMessage(content="This is the answer", reasoning_content="[thinking] let me work through this")
         )
 
     def _stream(self):
-        yield _FakeChunk(_FakeDelta(reasoning_content="[思考] 我来分析一下"))
-        yield _FakeChunk(_FakeDelta(content="这是回答"))
+        yield _FakeChunk(_FakeDelta(reasoning_content="[thinking] let me work through this"))
+        yield _FakeChunk(_FakeDelta(content="This is the answer"))
 
 
 class _FakeChat:
@@ -73,46 +74,46 @@ class _FakeOpenAI:
 
 def _make_client():
     c = KimiClient(api_key="dummy-key-for-test")
-    c.client = _FakeOpenAI()  # 替换底层客户端，避免真实网络调用
+    c.client = _FakeOpenAI()  # swap in the fake client so no real network call happens
     return c
 
 
-# ============ 测试用例 ============
+# ============ Test cases ============
 
 def test_blocking_preserves_reasoning_history():
     client = _make_client()
-    session = client.create_session(system="你是一个助手")
+    session = client.create_session(system="You are an assistant")
 
-    # 第一轮
-    out = session.chat("你好")
-    assert out == "这是回答", f"返回内容错误: {out}"
+    # First turn
+    out = session.chat("hello")
+    assert out == "This is the answer", f"unexpected content: {out}"
 
     hist = session.history()
     # system + user + assistant
-    assert len(hist) == 3, f"历史长度应为3，实际 {len(hist)}"
-    assert hist[0] == {"role": "system", "content": "你是一个助手"}
-    assert hist[1] == {"role": "user", "content": "你好"}
-    # 关键：assistant 消息必须保留 reasoning_content
+    assert len(hist) == 3, f"history should hold 3 messages, got {len(hist)}"
+    assert hist[0] == {"role": "system", "content": "You are an assistant"}
+    assert hist[1] == {"role": "user", "content": "hello"}
+    # Critical: the assistant message must retain reasoning_content
     assert hist[2]["role"] == "assistant"
-    assert hist[2]["content"] == "这是回答"
-    assert hist[2]["reasoning_content"] == "[思考] 我来分析一下", "thinking history 未保留！"
+    assert hist[2]["content"] == "This is the answer"
+    assert hist[2]["reasoning_content"] == "[thinking] let me work through this", "thinking history was not preserved"
 
-    # 第二轮：历史应继续累积
-    session.chat("再问一次")
-    assert len(session.history()) == 5, "第二轮后历史应为5条"
+    # Second turn: history should keep accumulating
+    session.chat("ask again")
+    assert len(session.history()) == 5, "history should hold 5 messages after the second turn"
 
 
 def test_streaming_separates_reasoning_and_content():
     client = _make_client()
     session = client.create_session()
 
-    chunks = list(session.chat("你好", stream=True))
+    chunks = list(session.chat("hello", stream=True))
     kinds = [k for k, _ in chunks]
-    assert kinds == ["reasoning", "content"], f"分块类型错误: {kinds}"
+    assert kinds == ["reasoning", "content"], f"unexpected chunk kinds: {kinds}"
 
-    # 流式结束后历史里仍有完整 assistant 消息（含 reasoning）
-    assert session.history()[-1]["reasoning_content"] == "[思考] 我来分析一下"
-    assert session.history()[-1]["content"] == "这是回答"
+    # After streaming, history still holds the complete assistant message (with reasoning)
+    assert session.history()[-1]["reasoning_content"] == "[thinking] let me work through this"
+    assert session.history()[-1]["content"] == "This is the answer"
 
 
 def test_reset_keeps_system():
@@ -134,12 +135,12 @@ def test_default_reasoning_effort_is_max():
 def test_send_image_appends_multimodal_message():
     client = _make_client()
     session = client.create_session()
-    # 用极小的 1x1 png base64，避免真实读取文件
+    # Use a tiny 1x1 png in base64 so no real file is read
     tiny_png = (
         "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M8AAAMBAQDJ/pLv"
     )
-    session.send_image(f"base64:{tiny_png}", "描述这张图")
-    # send_image 会追加 user 消息并立即调用 API，assistant 在末尾，user 在 [-2]
+    session.send_image(f"base64:{tiny_png}", "describe this image")
+    # send_image appends a user message and calls the API immediately: assistant is last, user is [-2]
     user_msg = session.history()[-2]
     assert user_msg["role"] == "user"
     assert isinstance(user_msg["content"], list)
@@ -153,4 +154,4 @@ if __name__ == "__main__":
     test_reset_keeps_system()
     test_default_reasoning_effort_is_max()
     test_send_image_appends_multimodal_message()
-    print("全部测试通过 ✓")
+    print("All tests passed.")
