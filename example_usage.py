@@ -1,130 +1,130 @@
 """
-Kimi K3 视频理解使用示例
-展示如何在你的代码中使用视频理解功能。
+Kimi K3 video understanding - usage examples
+Shows how to use the video understanding features in your own code.
 """
 
 from video_understanding import VideoUnderstanding, create_client
 
 
-# 示例1: 基础用法
+# Example 1: basic usage
 def example_basic():
-    """最简单的使用方式"""
-    print("示例1: 基础用法")
+    """The simplest way to use it"""
+    print("Example 1: basic usage")
     print("-" * 40)
 
-    # 创建客户端（需要设置环境变量 KIMI_API_KEY）
+    # Create a client (requires the KIMI_API_KEY environment variable)
     client = create_client()
 
-    # 快速描述视频
-    result = client.describe_video("./橘猫-agent.mp4")
-    print(f"视频描述: {result}\n")
+    # Quick video description
+    result = client.describe_video("./cat-agent.mp4")
+    print(f"Video description: {result}\n")
 
 
-# 示例2: 流式输出
+# Example 2: streaming output
 def example_stream():
-    """流式输出，实时显示结果"""
-    print("示例2: 流式输出")
+    """Stream the output, showing results as they arrive"""
+    print("Example 2: streaming output")
     print("-" * 40)
 
     client = create_client()
 
-    print("正在分析视频...")
+    print("Analyzing video...")
     for chunk in client.analyze_video(
-        "./橘猫-agent.mp4",
-        prompt="请用生动的语言描述这个视频，像讲故事一样。",
+        "./cat-agent.mp4",
+        prompt="Describe this video vividly, like telling a story.",
         stream=True
     ):
         print(chunk, end="", flush=True)
     print("\n")
 
 
-# 示例3: 自定义API密钥
+# Example 3: custom API key
 def example_custom_key():
-    """使用自定义API密钥"""
-    print("示例3: 自定义API密钥")
+    """Use a custom API key"""
+    print("Example 3: custom API key")
     print("-" * 40)
 
-    # 直接传入API密钥
+    # Pass the API key directly
     client = VideoUnderstanding(api_key="your_api_key_here")
 
-    result = client.describe_video("./橘猫-agent.mp4")
-    print(f"视频描述: {result}\n")
+    result = client.describe_video("./cat-agent.mp4")
+    print(f"Video description: {result}\n")
 
 
-# 示例4: 分析在线视频
+# Example 4: analyse a remote video
 def example_online_video():
-    """分析在线视频URL"""
-    print("示例4: 分析在线视频")
+    """Analyse a video from a URL"""
+    print("Example 4: analyse a remote video")
     print("-" * 40)
 
     client = create_client()
 
-    # 使用GitHub上的视频URL
-    video_url = "https://github.com/1982167424-art/Kimi-K3/raw/main/橘猫-agent.mp4"
+    # Use a video URL hosted on GitHub
+    video_url = "https://github.com/CherrieTheShifter/Kimi-K3/raw/main/cat-agent.mp4"
 
     result = client.analyze_video(
         video_url,
-        prompt="请描述这个视频的内容。",
+        prompt="Describe the content of this video.",
         stream=False
     )
-    print(f"视频描述: {result}\n")
+    print(f"Video description: {result}\n")
 
 
-# 示例5: 问答模式
+# Example 5: question-and-answer mode
 def example_qa():
-    """针对视频内容进行问答"""
-    print("示例5: 视频问答")
+    """Ask questions about the video content"""
+    print("Example 5: video Q&A")
     print("-" * 40)
 
     client = create_client()
 
     questions = [
-        "视频中主要发生了什么？",
-        "视频的主角是谁或什么？",
-        "视频的拍摄地点可能在哪里？",
+        "What mainly happens in the video?",
+        "Who or what is the subject of the video?",
+        "Where might the video have been filmed?",
     ]
 
     for q in questions:
-        answer = client.answer_question("./橘猫-agent.mp4", q)
+        answer = client.answer_question("./cat-agent.mp4", q)
         print(f"Q: {q}")
         print(f"A: {answer}\n")
 
 
-# 示例6: 专业分析
+# Example 6: professional analysis
 def example_professional():
-    """专业角度的视频分析"""
-    print("示例6: 专业分析")
+    """Analyse the video from a professional standpoint"""
+    print("Example 6: professional analysis")
     print("-" * 40)
 
     client = create_client()
 
-    professional_prompt = """请从专业视频制作的角度分析这个视频：
+    professional_prompt = """Analyse this video from a professional video-production standpoint:
 
-1. 镜头语言：使用了哪些镜头技巧？
-2. 剪辑节奏：视频的节奏如何？
-3. 声音设计：音效和配乐如何配合画面？
-4. 视觉风格：整体的视觉风格是什么？
-5. 改进建议：有哪些可以改进的地方？"""
+1. Camera work: which shot techniques are used?
+2. Editing rhythm: how does the pacing feel?
+3. Sound design: how do effects and music support the picture?
+4. Visual style: what is the overall look?
+5. Suggestions: what could be improved?"""
 
     result = client.analyze_video(
-        "./橘猫-agent.mp4",
+        "./cat-agent.mp4",
         prompt=professional_prompt,
         stream=False
     )
-    print(f"专业分析:\n{result}\n")
+    print(f"Professional analysis:\n{result}\n")
 
 
-# 示例7: 批量分析
+# Example 7: batch analysis
 def example_batch():
-    """批量分析多个视频"""
-    print("示例7: 批量分析")
+    """Analyse several videos in a batch"""
+    print("Example 7: batch analysis")
     print("-" * 40)
 
     client = create_client()
 
     video_files = [
-        "./橘猫-agent.mp4",
-        # 可以添加更多视频文件
+        "./cat-agent.mp4",
+        # Add more video files here
     ]
 
     results = {}
@@ -136,29 +136,29 @@ def example_batch():
             results[video] = {"status": "error", "error": str(e)}
 
     for video, result in results.items():
-        print(f"\n视频: {video}")
+        print(f"\nVideo: {video}")
         if result["status"] == "success":
-            print(f"描述: {result['description']}")
+            print(f"Description: {result['description']}")
         else:
-            print(f"错误: {result['error']}")
+            print(f"Error: {result['error']}")
 
 
-# 示例8: 自定义分析器
+# Example 8: a custom analyser
 def example_custom_analyzer():
-    """创建自定义分析器"""
-    print("示例8: 自定义分析器")
+    """Create a custom analyser"""
+    print("Example 8: custom analyser")
     print("-" * 40)
 
     class CatVideoAnalyzer(VideoUnderstanding):
-        """专门分析猫咪视频的分析器"""
+        """An analyser specialised for cat videos"""
 
         def analyze_cat_video(self, video_source: str) -> str:
-            """分析猫咪视频"""
-            prompt = """请以猫咪专家的角度分析这个视频：
-1. 这是什么品种的猫？
-2. 猫咪的行为特征是什么？
-3. 猫咪的情绪状态如何？
-4. 视频拍摄的环境如何？"""
+            """Analyse a cat video"""
+            prompt = """Analyse this video as a cat expert would:
+1. What breed is the cat?
+2. What behavioural traits does it show?
+3. What is the cat's emotional state?
+4. What is the filming environment like?"""
 
             return self.analyze_video(
                 video_source,
@@ -167,47 +167,47 @@ def example_custom_analyzer():
             )
 
     analyzer = CatVideoAnalyzer()
-    result = analyzer.analyze_cat_video("./橘猫-agent.mp4")
-    print(f"猫咪视频分析:\n{result}\n")
+    result = analyzer.analyze_cat_video("./cat-agent.mp4")
+    print(f"Cat video analysis:\n{result}\n")
 
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("Kimi K3 视频理解使用示例")
+    print("Kimi K3 video understanding - usage examples")
     print("=" * 60)
     print()
 
-    # 运行所有示例
+    # Run all examples
     examples = [
-        ("1", "基础用法", example_basic),
-        ("2", "流式输出", example_stream),
-        ("3", "自定义密钥", example_custom_key),
-        ("4", "在线视频", example_online_video),
-        ("5", "视频问答", example_qa),
-        ("6", "专业分析", example_professional),
-        ("7", "批量分析", example_batch),
-        ("8", "自定义分析器", example_custom_analyzer),
+        ("1", "Basic usage", example_basic),
+        ("2", "Streaming output", example_stream),
+        ("3", "Custom API key", example_custom_key),
+        ("4", "Remote video", example_online_video),
+        ("5", "Video Q&A", example_qa),
+        ("6", "Professional analysis", example_professional),
+        ("7", "Batch analysis", example_batch),
+        ("8", "Custom analyser", example_custom_analyzer),
     ]
 
-    print("可用示例:")
+    print("Available examples:")
     for num, name, _ in examples:
         print(f"  {num}. {name}")
 
-    choice = input("\n请选择要运行的示例 (1-8 或 'all'): ").strip()
+    choice = input("\nChoose an example to run (1-8 or 'all'): ").strip()
 
     if choice == "all":
         for num, name, func in examples:
             try:
                 func()
             except Exception as e:
-                print(f"\n示例 {num} ({name}) 出错: {e}")
+                print(f"\nExample {num} ({name}) failed: {e}")
     else:
         for num, name, func in examples:
             if choice == num:
                 try:
                     func()
                 except Exception as e:
-                    print(f"\n出错: {e}")
+                    print(f"\nError: {e}")
                 break
         else:
-            print(f"无效的选择: {choice}")
+            print(f"Invalid choice: {choice}")
