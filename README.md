@@ -25,7 +25,7 @@
 </p>
 
 <p align="center">
-📰&nbsp;&nbsp;<a href="https://www.kimi.com/blog/kimi-k3">Tech Blog</a> | &nbsp;&nbsp;&nbsp; <b>📄&nbsp;&nbsp;<a href="k3_tech_report.pdf">Full Report</a></b>
+📰&nbsp;&nbsp;<a href="https://www.kimi.com/blog/kimi-k3">Tech Blog</a> | <b>📄&nbsp;&nbsp;<a href="k3_tech_report.pdf">Full Report</a></b>
 </p>
 
 
