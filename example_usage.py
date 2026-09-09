@@ -16,7 +16,7 @@ def example_basic():
     client = create_client()
 
     # Quick video description
-    result = client.describe_video("./cat-agent.mp4")
+    result = client.describe_video("./orange-cat-agent.mp4")
     print(f"Video description: {result}\n")
 
 
@@ -30,7 +30,7 @@ def example_stream():
 
     print("Analyzing video...")
     for chunk in client.analyze_video(
-        "./cat-agent.mp4",
+        "./orange-cat-agent.mp4",
         prompt="Describe this video vividly, like telling a story.",
         stream=True
     ):
@@ -47,7 +47,7 @@ def example_custom_key():
     # Pass the API key directly
     client = VideoUnderstanding(api_key="your_api_key_here")
 
-    result = client.describe_video("./cat-agent.mp4")
+    result = client.describe_video("./orange-cat-agent.mp4")
     print(f"Video description: {result}\n")
 
 
@@ -60,7 +60,7 @@ def example_online_video():
     client = create_client()
 
     # Use a video URL hosted on GitHub
-    video_url = "https://github.com/CherrieTheShifter/Kimi-K3/raw/main/cat-agent.mp4"
+    video_url = "https://github.com/CherrieTheShifter/Kimi-K3/raw/main/orange-cat-agent.mp4"
 
     result = client.analyze_video(
         video_url,
@@ -85,7 +85,7 @@ def example_qa():
     ]
 
     for q in questions:
-        answer = client.answer_question("./cat-agent.mp4", q)
+        answer = client.answer_question("./orange-cat-agent.mp4", q)
         print(f"Q: {q}")
         print(f"A: {answer}\n")
 
@@ -107,7 +107,7 @@ def example_professional():
 5. Suggestions: what could be improved?"""
 
     result = client.analyze_video(
-        "./cat-agent.mp4",
+        "./orange-cat-agent.mp4",
         prompt=professional_prompt,
         stream=False
     )
@@ -123,7 +123,7 @@ def example_batch():
     client = create_client()
 
     video_files = [
-        "./cat-agent.mp4",
+        "./orange-cat-agent.mp4",
         # Add more video files here
     ]
 
@@ -167,7 +167,7 @@ def example_custom_analyzer():
             )
 
     analyzer = CatVideoAnalyzer()
-    result = analyzer.analyze_cat_video("./cat-agent.mp4")
+    result = analyzer.analyze_cat_video("./orange-cat-agent.mp4")
     print(f"Cat video analysis:\n{result}\n")
 
 
