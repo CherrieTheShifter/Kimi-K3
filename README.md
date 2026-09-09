@@ -31,7 +31,9 @@
 
 <p align="center">
 [Official Announcement](https://kimi-k2.org/zh/blog/39-kimi-k3-weights-live)
+</p>
 
+<p align="center">
 [Model Weights](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket)
 </p>
 
