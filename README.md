@@ -29,9 +29,9 @@
 </p>
 
 
-[官方说明](https://kimi-k2.org/zh/blog/39-kimi-k3-weights-live)
+[Official Announcement](https://kimi-k2.org/zh/blog/39-kimi-k3-weights-live)
 
-[模型权重](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket)
+[Model Weights](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket)
 
 ## 1. Model Introduction
 
