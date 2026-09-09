@@ -21,7 +21,7 @@
 
 
 <p align="center">
-  <b>English</b> | <a href="README_zh.md">中文</a>
+  <b>English</b>
 </p>
 
 <p align="center">
@@ -29,9 +29,11 @@
 </p>
 
 
+<p align="center">
 [Official Announcement](https://kimi-k2.org/zh/blog/39-kimi-k3-weights-live)
 
 [Model Weights](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket)
+</p>
 
 > **Using the Python client in this repo?** See [SDK.md](SDK.md).
 
