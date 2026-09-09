@@ -1,44 +1,44 @@
 """
-Kimi K3 多模态功能完整测试
-测试图片识别、图片生成、视频理解、视频生成功能。
+Kimi K3 multimodal - full feature tests
+Tests image recognition, image generation, video understanding, and video generation.
 """
 
 import os
 import sys
 from kimi_multimodal import KimiClient, create_client
 
-# === 配置 ===
-GITHUB_RAW_URL = "https://github.com/1982167424-art/Kimi-K3/raw/main/橘猫-agent.mp4"
-LOCAL_VIDEO_PATH = "./橘猫-agent.mp4"
+# === Configuration ===
+GITHUB_RAW_URL = "https://github.com/CherrieTheShifter/Kimi-K3/raw/main/cat-agent.mp4"
+LOCAL_VIDEO_PATH = "./cat-agent.mp4"
 TEST_IMAGE_URL = "https://picsum.photos/800/600"
 
 
 def download_video():
-    """下载测试视频"""
+    """Download the test video"""
     import requests
 
     if os.path.exists(LOCAL_VIDEO_PATH):
-        print(f"[准备] 视频已存在，跳过下载")
+        print(f"[setup] Video already present, skipping download")
         return
 
-    print(f"[准备] 正在从 GitHub 下载视频...")
+    print(f"[setup] Downloading video from GitHub...")
     resp = requests.get(GITHUB_RAW_URL, stream=True, timeout=120)
     resp.raise_for_status()
 
     with open(LOCAL_VIDEO_PATH, "wb") as f:
         for chunk in resp.iter_content(chunk_size=8192):
             f.write(chunk)
-    print(f"  下载完成: {LOCAL_VIDEO_PATH}")
+    print(f"  Download complete: {LOCAL_VIDEO_PATH}")
 
 
 # ============================================================
-# 图片识别测试
+# Image recognition tests
 # ============================================================
 
 def test_image_recognition():
-    """测试图片识别功能"""
+    """Test image recognition"""
     print("\n" + "=" * 60)
-    print("测试 1: 图片识别 - 基础描述")
+    print("Test 1: image recognition - basic description")
     print("=" * 60)
 
     client = create_client()
@@ -47,9 +47,9 @@ def test_image_recognition():
 
 
 def test_image_objects():
-    """测试物体识别"""
+    """Test object detection"""
     print("\n" + "=" * 60)
-    print("测试 2: 图片识别 - 物体检测")
+    print("Test 2: image recognition - object detection")
     print("=" * 60)
 
     client = create_client()
@@ -58,9 +58,9 @@ def test_image_objects():
 
 
 def test_image_scene():
-    """测试场景分析"""
+    """Test scene analysis"""
     print("\n" + "=" * 60)
-    print("测试 3: 图片识别 - 场景分析")
+    print("Test 3: image recognition - scene analysis")
     print("=" * 60)
 
     client = create_client()
@@ -69,97 +69,97 @@ def test_image_scene():
 
 
 def test_image_qa():
-    """测试图片问答"""
+    """Test image Q&A"""
     print("\n" + "=" * 60)
-    print("测试 4: 图片识别 - 问答模式")
+    print("Test 4: image recognition - Q&A mode")
     print("=" * 60)
 
     client = create_client()
     questions = [
-        "图片中主要的颜色是什么？",
-        "图片中有哪些物体？",
-        "这张图片给人什么感觉？"
+        "What are the dominant colours in the image?",
+        "What objects are in the image?",
+        "What feeling does this image give?"
     ]
 
     for q in questions:
-        print(f"\n问题: {q}")
+        print(f"\nQuestion: {q}")
         answer = client.answer_image_question(TEST_IMAGE_URL, q)
-        print(f"回答: {answer}")
+        print(f"Answer: {answer}")
 
 
 # ============================================================
-# 图片生成测试
+# Image generation tests
 # ============================================================
 
 def test_image_generation():
-    """测试图片生成功能"""
+    """Test image generation"""
     print("\n" + "=" * 60)
-    print("测试 5: 图片生成")
+    print("Test 5: image generation")
     print("=" * 60)
 
     client = create_client()
 
-    prompt = "一只可爱的橘猫在阳光下打盹，温馨的场景，高清摄影风格"
-    print(f"生成提示: {prompt}")
+    prompt = "a cute ginger cat dozing in the sunshine, cosy scene, high-definition photography"
+    print(f"Prompt: {prompt}")
 
     urls = client.generate_image(prompt, size="1024x1024", n=1)
-    print(f"\n生成成功！")
+    print(f"\nGenerated successfully.")
     for i, url in enumerate(urls, 1):
-        print(f"  图片 {i}: {url}")
+        print(f"  Image {i}: {url}")
 
 
 def test_image_generation_and_save():
-    """测试图片生成并保存"""
+    """Test image generation and saving"""
     print("\n" + "=" * 60)
-    print("测试 6: 图片生成并保存到本地")
+    print("Test 6: generate an image and save it locally")
     print("=" * 60)
 
     client = create_client()
 
-    prompt = "一个未来城市的夜景，霓虹灯闪烁，科幻风格"
+    prompt = "a futuristic city at night, flickering neon, sci-fi style"
     output_path = "./generated_image.png"
 
-    print(f"生成提示: {prompt}")
+    print(f"Prompt: {prompt}")
     client.generate_and_save_image(prompt, output_path, size="1024x1024")
-    print(f"图片已保存: {output_path}")
+    print(f"Image saved: {output_path}")
 
 
 def test_image_styles():
-    """测试不同风格的图片生成"""
+    """Test image generation across styles"""
     print("\n" + "=" * 60)
-    print("测试 7: 不同风格的图片生成")
+    print("Test 7: image generation in different styles")
     print("=" * 60)
 
     client = create_client()
 
     styles = [
-        ("写实摄影", "一只橘猫，真实照片风格"),
-        ("卡通动漫", "一只橘猫，卡通动漫风格"),
-        ("油画风格", "一只橘猫，梵高油画风格"),
+        ("Photorealistic", "a ginger cat, realistic photo style"),
+        ("Cartoon/anime", "a ginger cat, cartoon anime style"),
+        ("Oil painting", "a ginger cat, Van Gogh oil painting style"),
     ]
 
     for style_name, prompt in styles:
-        print(f"\n风格: {style_name}")
+        print(f"\nStyle: {style_name}")
         urls = client.generate_image(prompt, size="1024x1024")
-        print(f"  生成成功: {urls[0][:50]}...")
+        print(f"  Generated: {urls[0][:50]}...")
 
 
 # ============================================================
-# 视频理解测试
+# Video understanding tests
 # ============================================================
 
 def test_video_understanding():
-    """测试视频理解功能"""
+    """Test video understanding"""
     print("\n" + "=" * 60)
-    print("测试 8: 视频理解 - 流式输出")
+    print("Test 8: video understanding - streaming output")
     print("=" * 60)
 
     client = create_client()
 
-    print("\n正在分析视频...")
+    print("\nAnalyzing video...")
     for chunk in client.analyze_video(
         LOCAL_VIDEO_PATH,
-        prompt="请详细描述这个视频的内容。",
+        prompt="Describe the content of this video in detail.",
         stream=True
     ):
         print(chunk, end="", flush=True)
@@ -167,9 +167,9 @@ def test_video_understanding():
 
 
 def test_video_describe():
-    """测试视频快速描述"""
+    """Test quick video description"""
     print("\n" + "=" * 60)
-    print("测试 9: 视频快速描述")
+    print("Test 9: quick video description")
     print("=" * 60)
 
     client = create_client()
@@ -178,9 +178,9 @@ def test_video_describe():
 
 
 def test_video_timeline():
-    """测试视频时间线分析"""
+    """Test video timeline analysis"""
     print("\n" + "=" * 60)
-    print("测试 10: 视频时间线分析")
+    print("Test 10: video timeline analysis")
     print("=" * 60)
 
     client = create_client()
@@ -189,105 +189,105 @@ def test_video_timeline():
 
 
 def test_video_qa():
-    """测试视频问答"""
+    """Test video Q&A"""
     print("\n" + "=" * 60)
-    print("测试 11: 视频问答")
+    print("Test 11: video Q&A")
     print("=" * 60)
 
     client = create_client()
     questions = [
-        "视频里有几个人？",
-        "视频的背景音乐是什么类型的？",
-        "视频是在室内还是室外拍摄的？"
+        "How many people are in the video?",
+        "What kind of background music does it use?",
+        "Was it filmed indoors or outdoors?"
     ]
 
     for q in questions:
-        print(f"\n问题: {q}")
+        print(f"\nQuestion: {q}")
         answer = client.answer_video_question(LOCAL_VIDEO_PATH, q)
-        print(f"回答: {answer}")
+        print(f"Answer: {answer}")
 
 
 # ============================================================
-# 视频生成测试
+# Video generation tests
 # ============================================================
 
 def test_video_generation():
-    """测试视频生成功能"""
+    """Test video generation"""
     print("\n" + "=" * 60)
-    print("测试 12: 视频生成")
+    print("Test 12: video generation")
     print("=" * 60)
 
     client = create_client()
 
-    prompt = "一只橘猫在草地上玩耍，阳光明媚，温馨可爱"
-    print(f"生成提示: {prompt}")
+    prompt = "a ginger cat playing on the grass, bright sunshine, warm and cute"
+    print(f"Prompt: {prompt}")
 
     url = client.generate_video(prompt, duration=5, size="1280x720")
-    print(f"\n生成成功！")
-    print(f"  视频URL: {url}")
+    print(f"\nGenerated successfully.")
+    print(f"  Video URL: {url}")
 
 
 def test_video_generation_and_save():
-    """测试视频生成并保存"""
+    """Test video generation and saving"""
     print("\n" + "=" * 60)
-    print("测试 13: 视频生成并保存到本地")
+    print("Test 13: generate a video and save it locally")
     print("=" * 60)
 
     client = create_client()
 
-    prompt = "夕阳下的海滩，海浪轻轻拍打沙滩"
+    prompt = "a beach at sunset, waves lapping gently at the sand"
     output_path = "./generated_video.mp4"
 
-    print(f"生成提示: {prompt}")
+    print(f"Prompt: {prompt}")
     client.generate_and_save_video(prompt, output_path, duration=5)
-    print(f"视频已保存: {output_path}")
+    print(f"Video saved: {output_path}")
 
 
 # ============================================================
-# 主流程
+# Main flow
 # ============================================================
 
 def main():
-    """主测试流程"""
+    """Main test flow"""
     print("=" * 60)
-    print("Kimi K3 多模态功能完整测试")
+    print("Kimi K3 multimodal - full feature tests")
     print("=" * 60)
 
-    # 检查API密钥
+    # Check the API key
     if not os.environ.get("KIMI_API_KEY"):
-        print("\n错误: 请先设置环境变量 KIMI_API_KEY")
+        print("\nError: set the KIMI_API_KEY environment variable first")
         print("  export KIMI_API_KEY=\"your_api_key\"")
-        print("  API key 从 https://platform.kimi.ai 获取")
+        print("  Get an API key at https://platform.kimi.ai")
         sys.exit(1)
 
-    # 下载视频
+    # Download the video
     download_video()
 
-    # 测试菜单
+    # Test menu
     tests = [
-        ("1", "图片识别 - 基础描述", test_image_recognition),
-        ("2", "图片识别 - 物体检测", test_image_objects),
-        ("3", "图片识别 - 场景分析", test_image_scene),
-        ("4", "图片识别 - 问答模式", test_image_qa),
-        ("5", "图片生成", test_image_generation),
-        ("6", "图片生成并保存", test_image_generation_and_save),
-        ("7", "图片生成 - 不同风格", test_image_styles),
-        ("8", "视频理解 - 流式输出", test_video_understanding),
-        ("9", "视频快速描述", test_video_describe),
-        ("10", "视频时间线分析", test_video_timeline),
-        ("11", "视频问答", test_video_qa),
-        ("12", "视频生成", test_video_generation),
-        ("13", "视频生成并保存", test_video_generation_and_save),
-        ("img", "全部图片测试", None),
-        ("vid", "全部视频测试", None),
-        ("all", "全部测试", None),
+        ("1", "Image recognition - basic", test_image_recognition),
+        ("2", "Image recognition - objects", test_image_objects),
+        ("3", "Image recognition - scene", test_image_scene),
+        ("4", "Image recognition - Q&A", test_image_qa),
+        ("5", "Image generation", test_image_generation),
+        ("6", "Image generation and save", test_image_generation_and_save),
+        ("7", "Image generation - styles", test_image_styles),
+        ("8", "Video understanding - streaming", test_video_understanding),
+        ("9", "Quick video description", test_video_describe),
+        ("10", "Video timeline analysis", test_video_timeline),
+        ("11", "Video Q&A", test_video_qa),
+        ("12", "Video generation", test_video_generation),
+        ("13", "Video generation and save", test_video_generation_and_save),
+        ("img", "All image tests", None),
+        ("vid", "All video tests", None),
+        ("all", "All tests", None),
     ]
 
-    print("\n可用测试:")
+    print("\nAvailable tests:")
     for num, name, _ in tests:
         print(f"  {num}. {name}")
 
-    choice = input("\n请选择要运行的测试 (输入数字或 'all'): ").strip()
+    choice = input("\nChoose a test to run (number or 'all'): ").strip()
 
     if choice == "all":
         for num, name, test_func in tests[:-3]:
@@ -295,34 +295,34 @@ def main():
                 try:
                     test_func()
                 except Exception as e:
-                    print(f"\n测试 {num} ({name}) 出错: {e}")
+                    print(f"\nTest {num} ({name}) failed: {e}")
     elif choice == "img":
         for test_func in [test_image_recognition, test_image_objects, test_image_scene, test_image_qa,
                          test_image_generation, test_image_generation_and_save, test_image_styles]:
             try:
                 test_func()
             except Exception as e:
-                print(f"\n图片测试出错: {e}")
+                print(f"\nImage tests failed: {e}")
     elif choice == "vid":
         for test_func in [test_video_understanding, test_video_describe, test_video_timeline, test_video_qa,
                          test_video_generation, test_video_generation_and_save]:
             try:
                 test_func()
             except Exception as e:
-                print(f"\n视频测试出错: {e}")
+                print(f"\nVideo tests failed: {e}")
     else:
         for num, name, test_func in tests:
             if choice == num and test_func:
                 try:
                     test_func()
                 except Exception as e:
-                    print(f"\n测试出错: {e}")
+                    print(f"\nTest failed: {e}")
                 break
         else:
-            print(f"无效的选择: {choice}")
+            print(f"Invalid choice: {choice}")
 
     print("\n" + "=" * 60)
-    print("测试完成！")
+    print("Tests complete.")
     print("=" * 60)
 
 
