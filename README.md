@@ -1,6 +1,6 @@
 <div align="center">
   <picture>
-      <img src="assets/kimi-logo.png" width="30%" alt="Kimi K3">
+      <img src="assets/kimi-logo.png" width="30%" alt="Kimi K3"> 
   </picture>
 </div>
 <hr>
