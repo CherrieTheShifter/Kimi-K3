@@ -1,107 +1,59 @@
-# Kimi K3 Python SDK — proposed features
+# Kimi K3 Python SDK — roadmap
 
-> Scope: the Python implementation in this repository (a Kimi K3 multimodal API client).
-> Current state: `kimi_multimodal.py` implements image/video understanding and generation; `video_understanding.py` is the older video module (duplicating the same functionality).
-> Priorities: P0 core gaps and fixes → P1 parity with the README → P2 engineering quality → P3 repository and release.
+What has been built, and what is still open.
 
----
-
-## Hard problems to fix first (not new features, but they will bite)
-
-| # | Problem | Where | Notes |
-|---|---------|-------|-------|
-| B1 | **Inconsistent API base** | `kimi_multimodal.py` uses `api.moonshot.cn/v1`, `video_understanding.py` used `api.moonshot.ai` | Two different hosts for the same service. Pick one — the README points at `platform.kimi.ai`. |
-| B2 | **Wrong reasoning_effort values** | Both modules wrote `"low"/"medium"/"high"` | The README specifies `"low"/"high"/"max"` (default `max`). |
-| B3 | **Two duplicate clients** | `kimi_multimodal.py` vs `video_understanding.py` | The video features were written twice, almost identically. Double the maintenance, and the behaviour diverged. Merge into one client. |
+**Last reviewed:** September 9, 2026
 
 ---
 
-## P0 — core capability gaps (key K3 usage patterns, currently missing entirely)
+## Shipped
 
-### 1. Multi-turn chat with preserved thinking history
-K3 is trained in preserved-thinking-history mode. **For multi-turn conversations and tool calls, the complete assistant message returned by the API — including `reasoning_content` and `tool_calls` — must be passed back as-is.** Sending only `content` loses context.
-- Current state: `analyze_image` / `analyze_video` are one-shot calls with no session state.
-- Proposal: add a `ChatSession` class or `client.chat()` that maintains the `messages` list internally, preserves `reasoning_content` automatically, and offers `reset()`.
+### Correctness
 
-### 2. Basic text chat `chat()`
-- Current state: the client is called "multimodal" but only does image/video analysis and generation — **there is no plain text chat entry point.**
-- Proposal: `chat(prompt, stream=...)` via `chat.completions`, reusing the same reasoning/stream logic.
+- **Unified API base.** The client had two implementations pointing at different hosts (`api.moonshot.cn` and `api.moonshot.ai`). Now one base URL, one client.
+- **Correct `reasoning_effort` values.** Was `"low"/"medium"/"high"`; the API accepts `"low"/"high"/"max"` with `"max"` as the default.
+- **One client, not two.** `video_understanding.py` duplicated the whole video implementation. It is now a thin re-export so existing imports keep working, and all functionality lives in `KimiClient`.
 
-### 3. Separate streaming reasoning from content
-- Current state: `_process_stream` yields `reasoning_content` and `content` mixed together.
-- Proposal: support callbacks or separate capture, so a UI can show "thinking" and "final answer" apart (the README stresses that K3 always returns reasoning).
+### Core capability
 
-### 4. Merge the two clients, unify the base URL
-- Remove or demote `video_understanding.py`; move all capability into `KimiClient` and unify the base URL (use the README's `platform.kimi.ai` and verify the host actually works).
+- **Multi-turn chat with preserved thinking history.** `ChatSession` keeps the complete assistant message — `reasoning_content` and `tool_calls` included — so context survives across turns. Covered by offline tests.
+- **Plain text chat.** `client.chat(prompt)` and `session.chat(prompt)`.
+- **Streaming that separates thinking from answer.** Streaming yields `(kind, text)` pairs where `kind` is `"reasoning"` or `"content"`, so a UI can show them apart.
 
----
+### Engineering
 
-## P1 — capabilities the README claims but the code lacks
-
-### 5. Tool calling / function calling (`tool_calls`)
-The README states K3 supports tool calling. Implement `client.chat_with_tools(tools, ...)` and handle the multi-turn tool loop.
-
-### 6. Structured output / JSON mode
-The README mentions structured output. Add `client.structured(prompt, schema)` returning a parsed object.
-
-### 7. Context caching
-The README mentions context caching (saves tokens on long context). Mark long system prompts and large video descriptions for caching.
-
-### 8. Async client
-Every call is currently a synchronous OpenAI client. Add `AsyncKimiClient` (`AsyncOpenAI`) for high-concurrency batch work.
+- **Retries with backoff.** Connection errors and 408/429/5xx are retried with exponential backoff and jitter; a `Retry-After` header is honoured when the server sends one. Other 4xx errors fail immediately, since repeating them will not help. Configurable via `max_retries`.
+- **Token usage.** `client.last_usage` holds the most recent call's counts; `client.total_usage` accumulates across calls, including reasoning tokens. `reset_usage()` clears them. The CLI prints them with `--usage`.
+- **A real CLI.** `kimi_cli.py` gives `chat`, `image`, `video`, `gen-image` and `gen-video` subcommands with argparse, replacing the `input()` menus for scripted use.
+- **Packaging.** `pyproject.toml` and `requirements.txt`, with a `kimi-k3` console entry point and pinned dependency ranges.
+- **Tests and CI.** `test_client.py` and `test_chat_session.py` run offline against mocked clients — no API key, no network. GitHub Actions runs them on Python 3.9, 3.11 and 3.13 on every push and pull request.
 
 ---
 
-## P2 — engineering and usability
+## Open
 
-### 9. A real CLI (replacing the current `input()` menus)
-Use `argparse` to build a `kimi-k3` command:
+### Capabilities the model supports but the client does not
 
-```
-kimi-k3 chat "hello"
-kimi-k3 image ./cat.png --prompt "describe"
-kimi-k3 gen-image "a ginger cat" -o out.png
-```
+**Tool calling.** K3 supports `tool_calls`. Needs `client.chat_with_tools(tools, ...)` and a multi-turn tool loop. `ChatSession` already preserves `tool_calls` in history, so the groundwork is there.
 
-Today `example_usage.py` and `run_tests.py` are `input()`-driven and cannot be scripted.
+**Structured output.** K3 supports JSON schema responses. Needs `client.structured(prompt, schema)` returning a parsed object.
 
-### 10. Batch / directory processing with concurrency
-Promote the hand-written `for` loop in `example_usage.py` into `batch_analyze(pattern, max_concurrency=4)`, on top of the async client from item 8.
+**Context caching.** K3 caches long prompts at a large discount. Long system prompts and video descriptions should be marked for caching.
 
-### 11. Large-file upload strategy (avoid full base64)
-- Current state: the whole video is read into base64 and inlined as `data:video/mp4;base64,...`, which easily exceeds token and request-body limits.
-- Proposal: support a file-upload endpoint or upload-then-reference-by-URL, and accept more video formats than mp4.
+**Async client.** Everything is synchronous. An `AsyncKimiClient` built on `AsyncOpenAI` would make batch work practical.
 
-### 12. Retry, rate limiting, timeouts and backoff
-- Current state: no retries; `requests.get(..., timeout=...)` runs once, and a 429 fails outright.
-- Proposal: exponential backoff on 429/5xx, with configurable timeout and max retries.
+### Engineering
 
-### 13. Token usage and cost reporting
-- Current state: the `usage` field in the response is never surfaced.
-- Proposal: attach `prompt_tokens` / `completion_tokens` to results, with optional running totals.
+**Batch processing with concurrency.** `example_usage.py` loops sequentially. A `batch_analyze(pattern, max_concurrency=4)` on top of an async client would be the natural shape.
+
+**Large-file uploads.** Video is read entirely into base64 and inlined as a data URI, so large files can exceed request-body limits. A file-upload endpoint, or upload-then-reference-by-URL, would fix it — and would allow formats beyond mp4.
+
+**Model discovery.** `client.list_models()` or a config source, so new K3 variants do not require code changes.
 
 ---
 
-## P3 — repository and release
+## Notes
 
-### 14. Bring the SDK into the repository properly
-Add an `sdk/` directory for the Python implementation, with its own README separate from the model documentation.
+The API-backed test scripts — `run_tests.py`, `test_all_features.py`, `test_video_understanding.py` — are interactive and need a live key, so CI skips them. They are still the right way to check real behaviour before a release.
 
-### 15. Packaging and publishing
-Add `pyproject.toml` and `requirements.txt`, support `pip install kimi-k3-sdk`, and pin the `openai` / `requests` / `httpx` versions.
-
-### 16. Non-interactive tests and CI
-- Current state: the test scripts rely on `input()` menus and cannot run in CI.
-- Proposal: move to pytest, support `pytest --api-key=...` or an environment variable, and add a non-interactive `--all` mode.
-
-### 17. Model and capability discovery
-Add `client.list_models()` or a config source, so future K3 sub-models do not require code changes.
-
----
-
-## Suggested order of work
-
-1. Fix B1/B2/B3 first (one client, correct parameters) — that is the foundation.
-2. Then P0 items 1-3 (multi-turn chat, `chat()`, split streaming) to cover K3's most important usage patterns.
-3. Then P1 (tool calling, structured output, caching, async).
-4. Finally P2/P3 for usability and release quality.
+One open question: the client uses `api.moonshot.cn/v1` while the model README points at `platform.kimi.ai`. Both appear in official documentation. Verify which is correct for your account and region.
