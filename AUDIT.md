@@ -40,9 +40,17 @@ No `eval`, `exec`, `compile`, `__import__`, `pickle`, `marshal`, `subprocess`, `
 
 ### Tests — passing
 
-`test_chat_session.py` runs offline with no API key and no network, using a mock client. It verifies that thinking history is preserved across turns, that streaming separates reasoning from content, that `reset()` keeps only the system message, and that `reasoning_effort` defaults to `"max"`.
+Two suites run offline with no API key and no network, against mocked clients.
 
-It passes.
+`test_chat_session.py` verifies that thinking history is preserved across turns, that streaming separates reasoning from content, that `reset()` keeps only the system message, and that `reasoning_effort` defaults to `"max"`.
+
+`test_client.py` verifies the retry policy — that 429 is retried and 404 is not, that backoff grows and is capped, that a `Retry-After` header is honoured, and that the client gives up rather than looping — plus token accounting and every CLI subcommand.
+
+All 15 tests pass. CI runs both on Python 3.9, 3.11 and 3.13 for every push and pull request.
+
+### Retry behaviour — bounded
+
+The retry loop is capped by `max_retries` (default 3) and backs off exponentially with a 30-second ceiling. It cannot spin indefinitely, and it does not retry client errors that would never succeed. Verified by test.
 
 ---
 
