@@ -37,9 +37,7 @@
 [Model Weights](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket)
 </p>
 
-<p align="center">
 > **Using the Python client in this repo?** See [SDK.md](SDK.md).
-</p>
 
 ## 1. Model Introduction
 
