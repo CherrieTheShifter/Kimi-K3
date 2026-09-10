@@ -34,7 +34,7 @@
 </p>
 
 <p align="center">
-[Model Weights](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket)
+[Model Weights](https://huggingface.co/buckets/Cricosly/Kimi-K3-bucket) 
 </p>
 
 > **Using the Python client in this repo?** See [SDK.md](SDK.md).
