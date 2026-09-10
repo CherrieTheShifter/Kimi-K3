@@ -38,7 +38,7 @@
 </p>
 
 <p align="center">
-**Using the Python client in this repo?** See [SDK.md](SDK.md). 
+> This is the SDK documentation. For the model itself, see [README.md](README.md).
 </p>
 
 ## 1. Model Introduction
