@@ -12,7 +12,9 @@ Notes:
 
 import base64
 import os
+import random
 import tempfile
+import time
 from pathlib import Path
 from typing import Optional, Generator, List, Tuple, Dict, Any, Union
 
@@ -29,6 +31,28 @@ API_BASE = "https://api.moonshot.cn/v1"
 VALID_REASONING_EFFORTS = ("low", "high", "max")
 DEFAULT_REASONING_EFFORT = "max"
 
+# Retry policy for direct HTTP downloads and API calls.
+DEFAULT_MAX_RETRIES = 3
+RETRY_STATUS_CODES = (408, 429, 500, 502, 503, 504)
+RETRY_BASE_DELAY = 1.0      # seconds; doubles each attempt
+RETRY_MAX_DELAY = 30.0
+
+
+def _retry_delay(attempt: int, retry_after: Optional[str] = None) -> float:
+    """
+    Seconds to wait before the next attempt.
+
+    Honours a Retry-After header when the server sends one, otherwise uses
+    exponential backoff with jitter so concurrent clients don't sync up.
+    """
+    if retry_after:
+        try:
+            return min(float(retry_after), RETRY_MAX_DELAY)
+        except (TypeError, ValueError):
+            pass
+    delay = min(RETRY_BASE_DELAY * (2 ** attempt), RETRY_MAX_DELAY)
+    return delay * (0.5 + random.random() / 2)
+
 
 class KimiClient:
     """Kimi K3 multimodal AI client (single entry point)."""
@@ -39,6 +63,7 @@ class KimiClient:
         model: str = "kimi-k3",
         api_base: str = API_BASE,
         bypass_proxy: bool = True,
+        max_retries: int = DEFAULT_MAX_RETRIES,
     ):
         """
         Initialise the Kimi client
@@ -48,6 +73,7 @@ class KimiClient:
             model: model name, default kimi-k3
             api_base: API base URL, defaults to the official OpenAI-compatible endpoint
             bypass_proxy: connect directly, bypassing the system proxy (default True)
+            max_retries: retry attempts on 429 and 5xx, with exponential backoff
         """
         self.api_key = api_key or os.environ.get("KIMI_API_KEY")
         if not self.api_key:
@@ -59,6 +85,17 @@ class KimiClient:
 
         self.model = model
         self.api_base = api_base
+        self.max_retries = max_retries
+
+        # Token accounting. last_usage is the most recent call; total_usage accumulates.
+        self.last_usage: Dict[str, int] = {}
+        self.total_usage: Dict[str, int] = {
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "reasoning_tokens": 0,
+            "total_tokens": 0,
+            "calls": 0,
+        }
 
         # Bypass the proxy and connect directly (avoids local proxy env vars interfering)
         http_client = httpx.Client(trust_env=not bypass_proxy)
@@ -66,6 +103,7 @@ class KimiClient:
             api_key=self.api_key,
             base_url=self.api_base,
             http_client=http_client,
+            max_retries=max_retries,
         )
 
     # ============================================================
@@ -157,6 +195,7 @@ class KimiClient:
         if stream:
             return self._process_stream(response)
         else:
+            self._record_usage(response)
             return response.choices[0].message.content
 
     def describe_image(self, image_source: str) -> str:
@@ -256,8 +295,7 @@ class KimiClient:
         url = urls[0]
         print("Downloading generated image...")
 
-        resp = requests.get(url, stream=True, timeout=120, proxies={})
-        resp.raise_for_status()
+        resp = self._get(url, stream=True, timeout=120)
 
         with open(output_path, "wb") as f:
             for chunk in resp.iter_content(chunk_size=8192):
@@ -319,6 +357,7 @@ class KimiClient:
         if stream:
             return self._process_stream(response)
         else:
+            self._record_usage(response)
             return response.choices[0].message.content
 
     def describe_video(self, video_source: str) -> str:
@@ -410,8 +449,7 @@ class KimiClient:
 
         print("Downloading generated video...")
 
-        resp = requests.get(url, stream=True, timeout=300, proxies={})
-        resp.raise_for_status()
+        resp = self._get(url, stream=True, timeout=300)
 
         total = int(resp.headers.get("content-length", 0))
         downloaded = 0
@@ -457,6 +495,78 @@ class KimiClient:
     # Utility methods
     # ============================================================
 
+    def _get(self, url: str, *, stream: bool = False, timeout: int = 120):
+        """
+        HTTP GET with retries.
+
+        Retries on connection errors and on 408/429/5xx, with exponential
+        backoff and jitter. A Retry-After header is honoured when present.
+        Other 4xx errors are not retried - they will not succeed on a repeat.
+        """
+        last_error: Optional[Exception] = None
+
+        for attempt in range(self.max_retries + 1):
+            try:
+                resp = requests.get(url, stream=stream, timeout=timeout, proxies={})
+            except requests.RequestException as exc:
+                last_error = exc
+                if attempt == self.max_retries:
+                    break
+                delay = _retry_delay(attempt)
+                print(f"  Request failed ({exc.__class__.__name__}); retrying in {delay:.1f}s")
+                time.sleep(delay)
+                continue
+
+            if resp.status_code in RETRY_STATUS_CODES and attempt < self.max_retries:
+                delay = _retry_delay(attempt, resp.headers.get("Retry-After"))
+                print(f"  HTTP {resp.status_code}; retrying in {delay:.1f}s")
+                resp.close()
+                time.sleep(delay)
+                continue
+
+            resp.raise_for_status()
+            return resp
+
+        raise RuntimeError(
+            f"Request to {url} failed after {self.max_retries + 1} attempts"
+        ) from last_error
+
+    def _record_usage(self, response) -> None:
+        """Capture token counts from a response into last_usage and total_usage."""
+        usage = getattr(response, "usage", None)
+        if usage is None:
+            return
+
+        def _num(obj, key):
+            if obj is None:
+                return 0
+            if isinstance(obj, dict):
+                return obj.get(key, 0) or 0
+            return getattr(obj, key, 0) or 0
+
+        details = getattr(usage, "completion_tokens_details", None)
+        record = {
+            "prompt_tokens": _num(usage, "prompt_tokens"),
+            "completion_tokens": _num(usage, "completion_tokens"),
+            "reasoning_tokens": _num(details, "reasoning_tokens"),
+            "total_tokens": _num(usage, "total_tokens"),
+        }
+        self.last_usage = record
+        for k, v in record.items():
+            self.total_usage[k] = self.total_usage.get(k, 0) + v
+        self.total_usage["calls"] = self.total_usage.get("calls", 0) + 1
+
+    def reset_usage(self) -> None:
+        """Zero the cumulative token counters."""
+        self.last_usage = {}
+        self.total_usage = {
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "reasoning_tokens": 0,
+            "total_tokens": 0,
+            "calls": 0,
+        }
+
     def _load_image(self, image_source: str) -> Tuple[str, str]:
         """Load an image and convert it to base64, returning (base64, mime_type)"""
         if image_source.startswith("base64:"):
@@ -470,8 +580,7 @@ class KimiClient:
     def _download_image(self, url: str) -> Tuple[str, str]:
         """Download an image from a URL"""
         print(f"Downloading image: {url}")
-        resp = requests.get(url, timeout=120, proxies={})
-        resp.raise_for_status()
+        resp = self._get(url, timeout=120)
 
         content_type = resp.headers.get("content-type", "image/png")
         if ";" in content_type:
@@ -516,8 +625,7 @@ class KimiClient:
     def _download_video(self, url: str) -> str:
         """Download a video from a URL"""
         print(f"Downloading video: {url}")
-        resp = requests.get(url, stream=True, timeout=300, proxies={})
-        resp.raise_for_status()
+        resp = self._get(url, stream=True, timeout=300)
 
         total = int(resp.headers.get("content-length", 0))
         downloaded = 0
@@ -672,6 +780,7 @@ class ChatSession:
             reasoning_effort=self.reasoning_effort,
             stream=False,
         )
+        self.client._record_usage(resp)
         msg = resp.choices[0].message
         assistant_msg = {
             "role": "assistant",
@@ -702,6 +811,10 @@ class ChatSession:
             stream=True,
         )
         for chunk in stream:
+            if getattr(chunk, "usage", None):
+                self.client._record_usage(chunk)
+            if not chunk.choices:
+                continue
             delta = chunk.choices[0].delta
             if getattr(delta, "reasoning_content", None):
                 reasoning_parts.append(delta.reasoning_content)
