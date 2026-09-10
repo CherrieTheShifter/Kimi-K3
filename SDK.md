@@ -2,7 +2,7 @@
 
 A small Python client for the Kimi K3 API — text chat, image and video understanding, image and video generation, and multi-turn conversations with preserved thinking history.
 
-> This is the SDK documentation. For the model itself, see [README.md](README.md) 
+> This is the SDK documentation. For the model itself, see [README.md](README.md)  
 
 ---
 
